@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:41:21 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/04 19:08:33 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/04 22:31:24 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ Config::Config(char const *path)
 	}
 	catch (std::exception& e)
 	{
-		std::cout << e.what() << std::endl;
-		exit(1);
+		std::cout << e.what() << "CONFIG ERROR" << std::endl;
 	}
 }
 
@@ -37,24 +36,34 @@ std::string	Config::getConfig()
 
 ///////// STATIC FUNCTIONS /////////
 
-void	Config::read_config_file(char const *path)
+int	Config::read_config_file(char const *path)
 {
 	std::fstream	fs(path, std::fstream::in);
 	if (!(fs.is_open()))
-		throw (ConfigErrorException("Could not open file at " + path));	
+		throw (std::exception());	
 	this->textfile = std::string((std::istreambuf_iterator<char>(fs)),
 						std::istreambuf_iterator<char>());
+	return (0);
 }
 
-void	Config::parse_server_blocks()
+int	Config::parse_server_blocks()
 {
-	size_t file_size = this->textfile.size();
-	size_t pos, beg, end = 0;
-	while (pos < file_size)
+	size_t pos = 0, beg = 0, end = 0;
+	while (pos)
 	{
 		beg = textfile.find("<server>", pos);
-		end = textfile.find("</server>", pos);
-		if (beg == std::string::npos || end == std::string::npos)
-			throw (ConfigErrorException("Server block not closed"));
+		end = textfile.find("</server>", beg);
+		if (beg && end && (beg != end))
+		{
+			std::cout << "from pos " << pos << std::endl;
+			std::string res(&textfile[beg], end - beg);
+			std::cout << res << std::endl;
+		}
+		else
+		{
+			break;
+		}
+		pos = end + 1;
 	}
+	return (0);
 }

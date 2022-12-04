@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 17:21:29 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/04 18:07:47 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/04 22:02:39 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int main()
 	{	
 		char *str = (char *)"../../config_files/default.conf";
 		Config conf(str);
-		std::cout << conf.getConfig() << std::endl;
 	}
 	catch (std::exception e)
 	{

@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:41:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/04 19:12:31 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/04 21:56:31 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,20 @@ class Config
 		Server			servers;
 
 	private:
-		void	read_config_file(char const *path);
-		void	parse_server_blocks();
+		int	read_config_file(char const *path);
+		int	parse_server_blocks();
 
-		class	ConfigErrorException : public std::runtime_error
-		{
-			// private:
-			// 	std::string	message;
-
-			public:
-				ConfigErrorException(const char *what) : runtime_error(what) {}
-				// message("CONFIG ERROR: " + msg)
-				// {}
-				// virtual const char* what() const throw () 
-				// {
-				// 	return (message.c_str());
-				// }
-		};
+		// class	ConfigErrorException : public std::exception
+		// {
+		// 	private:
+		// 		std::string message;
+				
+		// 	public:
+		// 		ConfigErrorException(std::string msg) : message(msg) {}
+				
+		// 		virtual const char* what() const noexcept override
+		// 		{ return (message.c_str()); }
+		// };
 };
 
 #endif
