@@ -6,18 +6,21 @@
 #    By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/03 14:56:07 by ntan              #+#    #+#              #
-#    Updated: 2022/12/03 14:56:51 by ntan             ###   ########.fr        #
+#    Updated: 2022/12/04 18:02:15 by ntan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS			=	srcs/main.cpp
+SRCS			=	config_test.cpp\
+					Config.cpp\
+					Server.cpp\
+					Location.cpp
 OBJS			= 	$(SRCS:.cpp=.o)
 
 DEPENDS 		= 	$(patsubst %.cpp,%.d,$(SRCS))			
 CC				=	c++
 RM				=	rm -f
 CFLAGS			=	-Wall -Wextra -Werror -g -std=c++98
-NAME			=	webserv
+NAME			=	config_test
 
 all:			$(NAME)
 

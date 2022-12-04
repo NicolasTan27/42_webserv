@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Config.hpp                                         :+:      :+:    :+:   */
+/*   config_test.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/02 16:41:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/02 16:47:28 by ntan             ###   ########.fr       */
+/*   Created: 2022/12/04 17:21:29 by ntan              #+#    #+#             */
+/*   Updated: 2022/12/04 18:07:47 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CONFIG_HPP
-# define CONFIG_HPP
+# include "Config.hpp"
+# include <iostream>
+# include <fstream>
+# include <string>
 
-# include "Server.hpp"
-
-class Config
+int main()
 {
-	public:
-		Config();
-		~Config();
-		Config(const Config &other);
-		Config &operator=(const Config &other);
-
-	private:
-		Server	servers;
-};
-
-#endif
+	try
+	{	
+		char *str = (char *)"../../config_files/default.conf";
+		Config conf(str);
+		std::cout << conf.getConfig() << std::endl;
+	}
+	catch (std::exception e)
+	{
+		std::cout << e.what() << std::endl;
+	}
+	return (0);
+}
