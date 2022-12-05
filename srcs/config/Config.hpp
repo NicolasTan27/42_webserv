@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:41:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/04 21:56:31 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/05 16:18:44 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@
 # include <iostream>
 # include <fstream>
 # include <string>
+# include <algorithm>
 # include <cstdlib>
+
+# define MAX_SERV 10
 
 class Config
 {
@@ -28,15 +31,19 @@ class Config
 		Config(const Config &other);
 		Config &operator=(const Config &other);
 		
+	public:
 		std::string		getConfig();
+		void			printServers();
 
 	private:
 		std::string		textfile;
-		Server			servers;
+		size_t			servers_count;
+		Server			servers[MAX_SERV];
 
 	private:
-		int	read_config_file(char const *path);
-		int	parse_server_blocks();
+		int		read_config_file(char const *path);
+		int		parse_server_blocks();
+		void	addServer(std::string server_block);
 
 		// class	ConfigErrorException : public std::exception
 		// {
