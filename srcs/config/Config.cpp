@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:41:21 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/05 16:51:30 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/05 17:39:30 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,8 @@ Config::~Config() {}
 
 Config::Config(char const *path) : servers_count(0)
 {
-	try 
-	{
-		read_config_file(path);
-		parse_server_blocks();
-	}
-	catch (std::exception& e)
-	{
-		std::cout << e.what() << "CONFIG ERROR" << std::endl;
-	}
+	read_config_file(path);
+	parse_server_blocks();
 }
 
 std::string	Config::getConfig()
@@ -49,13 +42,13 @@ void	Config::printServers()
 void	print_exit(char const *error, std::string msg)
 {
 	std::cout << error << msg << std::endl;
-	exit(1);
+	throw (std::exception());
 }
 
 void	print_exit(char const *error, size_t num)
 {
 	std::cout << error << num << std::endl;
-	exit(1);
+	throw (std::exception());
 }
 
 ///////// PRIVATE FUNCTIONS /////////
@@ -64,9 +57,7 @@ int	Config::read_config_file(char const *path)
 {
 	std::fstream	fs(path, std::fstream::in);
 	if (!(fs.is_open()))
-		throw (std::exception());
-	// this->textfile = std::string((std::istreambuf_iterator<char>(fs)),
-	// 					std::istreambuf_iterator<char>());
+		print_exit("ERROR: Could not read file at ", path);
 	std::string line;
 	while (getline(fs, line))
 	{

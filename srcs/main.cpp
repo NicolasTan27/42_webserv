@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 14:57:05 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/04 16:41:28 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/05 17:06:51 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,7 @@ int main()
 			return (1);
 		}
 		std::cout << buffer << std::endl;
-		char response[] = 
-		"HTTP/1.1 200 OK\n
-		Content-Type: text/plain\n
-		Content-Length: 12\n
-		\n
-		Hello world!";
+		char response[] = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
 		write(new_socket, response, sizeof(response));
 		std::cout << "===== RESPONSE SENT =====" << std::endl;
 		close(new_socket);
