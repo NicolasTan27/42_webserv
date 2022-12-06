@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:41:21 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/05 17:39:30 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/06 19:40:42 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	Config::printServers()
 	for (size_t i = 0; i < servers_count; i++)
 	{
 		std::cout << "[ SERVER : " << i << " ]" << std::endl;
-		std::cout << servers[i].getTextfile() << std::endl;
+		// std::cout << servers[i].getTextfile() << std::endl;
+		servers[i].print_config();
 	}
 		 
 }

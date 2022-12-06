@@ -6,14 +6,15 @@
 #    By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/03 14:56:07 by ntan              #+#    #+#              #
-#    Updated: 2022/12/04 18:02:15 by ntan             ###   ########.fr        #
+#    Updated: 2022/12/06 18:41:20 by ntan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS			=	config_test.cpp\
 					Config.cpp\
 					Server.cpp\
-					Location.cpp
+					Location.cpp\
+					Keys.cpp
 OBJS			= 	$(SRCS:.cpp=.o)
 
 DEPENDS 		= 	$(patsubst %.cpp,%.d,$(SRCS))			
