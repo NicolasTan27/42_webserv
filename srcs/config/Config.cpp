@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:41:21 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/06 19:40:42 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/07 19:11:06 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,8 @@ void	Config::printServers()
 	for (size_t i = 0; i < servers_count; i++)
 	{
 		std::cout << "[ SERVER : " << i << " ]" << std::endl;
-		// std::cout << servers[i].getTextfile() << std::endl;
 		servers[i].print_config();
 	}
-		 
 }
 
 ///////// STATIC FUNCTIONS /////////
@@ -103,6 +101,11 @@ int	Config::parse_server_blocks()
 
 void	Config::addServer(std::string server_block)
 {
-	this->servers[servers_count] = Server(server_block);
-	servers_count++;
+	if (servers_count < MAX_SERV)
+	{
+		this->servers[servers_count] = Server(server_block);
+		servers_count++;
+	}
+	else
+		std::cout << "MAX SERV AT " << MAX_SERV << " IGNORING OTHERS" << std::endl; 
 }

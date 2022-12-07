@@ -22949,8 +22949,7 @@ class Keys
   Keys();
   Keys(std::string _name, std::string _value, std::string _delimiter, bool _mandatory, bool _multi_args);
   ~Keys();
-  Keys(const Keys &other);
-  Keys &operator=(const Keys &other);
+  std::string &operator[](size_t n);
 
  public:
   std::string name;
@@ -22972,6 +22971,8 @@ class Keys
 
 
 
+
+
 class Server
 {
  public:
@@ -22979,15 +22980,15 @@ class Server
   Server(std::string text);
   ~Server();
 
-
-
  public:
   std::string getTextfile();
   void print_config();
   void parse_lines();
+  void parse_lines_forest(std::string name, std::string value);
 
- private:
+ public:
   std::string textfile;
+
 
 
   Keys listen;
@@ -31187,6 +31188,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
 
+
 class Config
 {
  public:
@@ -31200,7 +31202,7 @@ class Config
   std::string getConfig();
   void printServers();
 
- private:
+ public:
   std::string textfile;
   size_t servers_count;
   Server servers[10];

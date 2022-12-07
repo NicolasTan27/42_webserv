@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:41:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/06 15:41:32 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/07 18:45:11 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <cstdlib>
 
 # define MAX_SERV 10
+# define MAX_LOCATIONS 10
 
 class Config
 {
@@ -35,7 +36,7 @@ class Config
 		std::string		getConfig();
 		void			printServers();
 
-	private:
+	public:
 		std::string		textfile;
 		size_t			servers_count;
 		Server			servers[MAX_SERV];

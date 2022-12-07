@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:49:18 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/06 19:14:31 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/07 18:09:55 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ class Keys
 		Keys();
 		Keys(std::string _name, std::string _value, std::string _delimiter, bool _mandatory, bool _multi_args);
 		~Keys();
-		Keys(const Keys &other);
-		Keys	&operator=(const Keys &other);
+		std::string	&operator[](size_t n);
 		
 	public:
 		std::string					name;			// name of the keyword

@@ -22947,8 +22947,7 @@ class Keys
   Keys();
   Keys(std::string _name, std::string _value, std::string _delimiter, bool _mandatory, bool _multi_args);
   ~Keys();
-  Keys(const Keys &other);
-  Keys &operator=(const Keys &other);
+  std::string &operator[](size_t n);
 
  public:
   std::string name;
@@ -22970,6 +22969,8 @@ class Keys
 
 
 
+
+
 class Server
 {
  public:
@@ -22977,15 +22978,15 @@ class Server
   Server(std::string text);
   ~Server();
 
-
-
  public:
   std::string getTextfile();
   void print_config();
   void parse_lines();
+  void parse_lines_forest(std::string name, std::string value);
 
- private:
+ public:
   std::string textfile;
+
 
 
   Keys listen;
@@ -22999,28 +23000,59 @@ Server::Server() {}
 
 Server::~Server() {}
 
+
 Server::Server(std::string text) : textfile(text),
+
+
  listen("listen", "0.0.0.0:8080", ":", false, true),
  server_name("server_name", "", "", false, false),
  client_max_body_size("client_max_body_size", "100", "", false, false),
- error_page("error_page", "404, errors_pages/error404.html", ",", false, true)
+ error_page("error_page", "404,errors_pages/error404.html", ",", false, true)
 {
-
  parse_lines();
 }
-# 42 "Server.cpp"
+
+
+
 std::string Server::getTextfile()
 {
  return (this->textfile);
 }
 
+
 void Server::print_config()
 {
+
  listen.print();
  server_name.print();
+ client_max_body_size.print();
+ error_page.print();
 }
 
 
+
+void remove_newline(std::string &str)
+{
+ while (str.find("\n") != std::string::npos)
+ {
+  str.erase(str.find("\n"));
+ }
+}
+
+
+
+void Server::parse_lines_forest(std::string name, std::string value)
+{
+
+ if (name == "listen")
+  listen.setValue(value);
+ else if (name == "server_name")
+  server_name.setValue(value);
+ else if (name == "client_max_body_size")
+  client_max_body_size.setValue(value);
+ else if (name == "error_page")
+  error_page.setValue(value);
+}
 
 void Server::parse_lines()
 {
@@ -23029,15 +23061,18 @@ void Server::parse_lines()
  while (pos != std::string::npos)
  {
   line = textfile.substr(pos, textfile.find("\n", pos));
+  remove_newline(line);
+
   delim = line.find(":");
-  name = line.substr(0, delim);
-  value = line.substr(delim + 1);
+  if (delim != std::string::npos)
+  {
+   name = line.substr(0, delim);
+   value = line.substr(delim + 1);
+   parse_lines_forest(name, value);
+  }
 
-  if (name == "listen")
-   listen.setValue(value);
-  else if (name == "server_name")
-   server_name.setValue(value);
-
-  pos = textfile.find("\n", pos + 1);
+  pos = textfile.find("\n", pos);
+  if (pos != std::string::npos)
+   pos += 1;
  }
 }
