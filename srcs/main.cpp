@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 14:57:05 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/05 17:06:51 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/08 19:52:53 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "netinet/in.h"
 #include <poll.h>
 
-#define PORT 8080
+#define PORT 9191
 
 int main()
 {
@@ -85,11 +85,13 @@ int main()
 			std::cerr << "Read error" << std::endl;
 			return (1);
 		}
-		std::cout << buffer << std::endl;
+		std::string request(buffer, rd);
+		std::cout << request << std::endl;
 		char response[] = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
 		write(new_socket, response, sizeof(response));
 		std::cout << "===== RESPONSE SENT =====" << std::endl;
 		close(new_socket);
 	}
+	close(server_fd);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:41:21 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/07 19:11:06 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/08 17:01:52 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,15 @@ std::string	Config::getConfig()
 
 void	Config::printServers()
 {
+	std::cout << "###############" << std::endl;
+	std::cout << "example : first argument of listen in server 0, use conf.servers[0].listen[0] (here it is : [" << servers[0].listen[0] << "])" << std::endl;
+	std::cout << "example : allowed_methods in server 0, use conf.servers[0].locations[0].allowed_methods[0] (here it is : [" << servers[0].locations[0].allowed_methods[0] << "])" << std::endl;
+	std::cout << "###############" << std::endl;
 	for (size_t i = 0; i < servers_count; i++)
 	{
-		std::cout << "[ SERVER : " << i << " ]" << std::endl;
+		std::cout << "------[ SERVER : " << i << " ]------" << std::endl;
 		servers[i].print_config();
+		std::cout << std::endl;
 	}
 }
 

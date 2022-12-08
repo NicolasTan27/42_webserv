@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:47:35 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/07 19:17:03 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/08 18:21:13 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,14 @@ Server::Server() {}
 Server::~Server() {}
 
 
-Server::Server(std::string text) :	textfile(text),
+Server::Server(std::string text) :	textfile(text), locations_count(0),
 	// **ADD KEYS HERE, DEFAULT VALUES, DON'T LET SPACES BETWEEN VALUES
-	// usage : object("object", "values seperated by delim", "delim", mandatory?, multiargs?)
-	listen("listen", "0.0.0.0:8080", ":", false, true),
-	server_name("server_name", "", "", false, false),
-	client_max_body_size("client_max_body_size", "100", "", false, false),
-	error_page("error_page", "404,errors_pages/error404.html", ",", false, true)								
+	// usage : object("object", "values seperated by delim", "delim") 
+	// -> if no delimiter given, it will only consider a whole value
+	listen("listen", "0.0.0.0:8080", ":"),
+	server_name("server_name", "", ""),
+	client_max_body_size("client_max_body_size", "100", ""),
+	error_page("error_page", "404,errors_pages/error404.html", ",")								
 {
 	parse_lines();
 } 
@@ -35,7 +36,6 @@ std::string	Server::getTextfile()
 	return (this->textfile);
 }
 
-
 void		Server::print_config()
 {
 	// **ADD KEYS HERE
@@ -43,6 +43,11 @@ void		Server::print_config()
 	server_name.print();
 	client_max_body_size.print();
 	error_page.print();
+	for (size_t i = 0; i < locations_count; i++)
+	{
+		std::cout << "(" << i << ") ";
+		locations[i].print_location();
+	}
 }
 
 //////////  STATIC  //////////
@@ -69,6 +74,23 @@ void	Server::parse_lines_forest(std::string name, std::string value)
 	else if (name == "error_page")
 		error_page.setValue(value);
 	else if (name == "location")
+		addLocation(value);
+	else if (name == "allowed_methods")
+		currentLocation().allowed_methods.setValue(value);
+	else if (name == "rewrite")
+		currentLocation().rewrite.setValue(value);
+	else if (name == "root")
+		currentLocation().root.setValue(value);
+	else if (name == "autoindex")
+		currentLocation().autoindex.setValue(value);
+	else if (name == "cgi")
+		currentLocation().cgi.setValue(value);
+	else if (name == "default_dir_request")
+		currentLocation().default_dir_request.setValue(value);
+	else if (name == "upload_dir")
+		currentLocation().upload_dir.setValue(value);
+	else
+		std::cout << "unrecognized instruction : " << name << ", skipping this keyword" << std::endl;
 }
 
 void	Server::parse_lines()
@@ -91,5 +113,23 @@ void	Server::parse_lines()
 		pos = textfile.find("\n", pos);
 		if (pos != std::string::npos)
 			pos += 1;
+	}
+}
+
+void	Server::addLocation(std::string value)
+{
+	this->locations[locations_count].path.setValue(value);
+	this->locations_count++;
+}
+
+// Return the last added location block
+Location&	Server::currentLocation()
+{
+	if (locations_count > 0)
+		return (this->locations[locations_count - 1]);
+	else
+	{
+		std::cout << "Instructions before any locations block" << std::endl;
+		throw (std::exception());
 	}
 }

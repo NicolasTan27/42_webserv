@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:48:55 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/07 18:41:12 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/08 15:12:21 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 Keys::Keys() {}
 
-Keys::Keys(std::string _name, std::string _value, std::string _delimiter, bool _mandatory, bool _multi_args)
+Keys::Keys(std::string _name, std::string _value, std::string _delimiter)
 {
 	this->name = _name;
 	this->delimiter = _delimiter;
-	this->mandatory = _mandatory;
-	this->multi_args = _multi_args;
 	setValue(_value);
 }
 

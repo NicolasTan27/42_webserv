@@ -22983,7 +22983,7 @@ int main()
  std::memset((char *) &address, 0, sizeof(address));
  address.sin_family = 2;
  address.sin_addr.s_addr = htonl(((in_addr_t) 0x00000000));
- address.sin_port = htons(8080);
+ address.sin_port = htons(9191);
 
 
 
@@ -23019,11 +23019,13 @@ int main()
    std::cerr << "Read error" << std::endl;
    return (1);
   }
-  std::cout << buffer << std::endl;
+  std::string request(buffer, rd);
+  std::cout << request << std::endl;
   char response[] = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
   write(new_socket, response, sizeof(response));
   std::cout << "===== RESPONSE SENT =====" << std::endl;
   close(new_socket);
  }
+ close(server_fd);
  return (0);
 }

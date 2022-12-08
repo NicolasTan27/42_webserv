@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:49:18 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/07 18:09:55 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/08 15:13:38 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ class Keys
 {
 	public:
 		Keys();
-		Keys(std::string _name, std::string _value, std::string _delimiter, bool _mandatory, bool _multi_args);
+		Keys(std::string _name, std::string _value, std::string _delimiter);
 		~Keys();
 		std::string	&operator[](size_t n);
 		
@@ -30,8 +30,8 @@ class Keys
 		std::vector<std::string>	values;			// values for this keyword, can contains multiple values
 		std::string					delimiter;		// delimiter if there is multiple arguments
 		// std::string					default_value;	// default value if not provided
-		bool						mandatory;		// to check if the value must be provided
-		bool						multi_args;		// to check if there is multiple value
+		// bool						mandatory;		// to check if the value must be provided
+		// bool						multi_args;		// to check if there is multiple value
 		// bool						set;			// to check if the value was register at least once
 		
 	public:
