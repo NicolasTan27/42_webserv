@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 17:15:38 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/08 18:19:09 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/09 15:21:51 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <string>
 # include <iostream>
 
-# ifndef MAX_LOCATIONS
+# ifndef MAX_LOCATIONS // defined in config.hpp
 # define MAX_LOCATIONS 10
 # endif
 
@@ -38,16 +38,16 @@ class Server
 		Location&	currentLocation();
 
 	public:
-		std::string	textfile;
+		std::string	textfile; // Raw server block
 		
 		Location	locations[MAX_LOCATIONS];
 		size_t		locations_count;
 
 		// **ADD KEYS HERE
-		Keys	listen;
-		Keys	server_name;
-		Keys	client_max_body_size;
-		Keys	error_page;
+		Keys	listen;					// define ip and port of the virtual server
+		Keys	server_name;			// optional name in addition of listen
+		Keys	client_max_body_size;	// max size that the client can send
+		Keys	error_page;				// define default error page
 
 };
 

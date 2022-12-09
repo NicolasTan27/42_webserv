@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:48:55 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/08 15:12:21 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/09 14:52:59 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,19 @@ void	Keys::setValue(std::string newValue)
 			delim_pos = newValue.find(this->delimiter);
 			if (delim_pos == 0)
 				break;
-			this->values.push_back(newValue.substr(0, delim_pos));
+			addValue(newValue.substr(0, delim_pos));
 			newValue = newValue.substr(delim_pos + 1);
 		}
 	}
 	else
 	{
-		this->values.push_back(newValue);
+		addValue(newValue);
 	}
+}
+
+void	Keys::addValue(std::string newValue)
+{
+	this->values.push_back(newValue);
 }
 
 ///// DEBUG FUNCTIONS /////

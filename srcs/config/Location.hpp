@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 17:15:49 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/08 18:19:46 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/09 15:24:55 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ class Location {
 		void	print_location();
 	
 		// **ADD KEYS HERE
-		Keys	path;
-		Keys	allowed_methods;
-		Keys	rewrite;
-		Keys	root;
-		Keys	autoindex;
-		Keys	cgi;
-		Keys	default_dir_request;
-		Keys	upload_dir;	
+		Keys	path;					//	request with this path will use this block
+		Keys	allowed_methods;		//	allowed methods for this location
+		Keys	rewrite;				//	redirection
+		Keys	root;					//	directory or file where the file should be searched from
+		Keys	autoindex;				//	define if directory listing in enabled
+		Keys	cgi;					// 
+		Keys	default_dir_request;	//	default file if the request is a directory
+		Keys	upload_dir;				// 	allow this location to accept upload and define a directory to store them
 };
 
 #endif

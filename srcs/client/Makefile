@@ -6,24 +6,21 @@
 #    By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/03 14:56:07 by ntan              #+#    #+#              #
-#    Updated: 2022/12/09 17:14:39 by ntan             ###   ########.fr        #
+#    Updated: 2022/12/09 14:22:34 by ntan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS			=	srcs/main.cpp\
-					srcs/config/Config.cpp\
-					srcs/config/Keys.cpp\
-					srcs/config/Location.cpp\
-					srcs/config/Server.cpp\
-					srcs/client/Request.cpp
-
+SRCS			=	Request.cpp\
+					request_test.cpp\
+					../config/Keys.cpp
+	
 OBJS			= 	$(SRCS:.cpp=.o)
 
 DEPENDS 		= 	$(patsubst %.cpp,%.d,$(SRCS))			
 CC				=	c++
 RM				=	rm -f
 CFLAGS			=	-Wall -Wextra -Werror -g -std=c++98
-NAME			=	webserv
+NAME			=	request_test
 
 all:			$(NAME)
 

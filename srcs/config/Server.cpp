@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:47:35 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/08 18:21:13 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/09 17:15:00 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 Server::Server() {}
 
 Server::~Server() {}
-
 
 Server::Server(std::string text) :	textfile(text), locations_count(0),
 	// **ADD KEYS HERE, DEFAULT VALUES, DON'T LET SPACES BETWEEN VALUES
@@ -29,28 +28,8 @@ Server::Server(std::string text) :	textfile(text), locations_count(0),
 	parse_lines();
 } 
 
-////// DEBUG FUNCTIONS //////
-
-std::string	Server::getTextfile()
-{
-	return (this->textfile);
-}
-
-void		Server::print_config()
-{
-	// **ADD KEYS HERE
-	listen.print();
-	server_name.print();
-	client_max_body_size.print();
-	error_page.print();
-	for (size_t i = 0; i < locations_count; i++)
-	{
-		std::cout << "(" << i << ") ";
-		locations[i].print_location();
-	}
-}
-
-//////////  STATIC  //////////
+/* ************************************************************************** */
+/* STATIC */
 
 void	remove_newline(std::string &str)
 {
@@ -60,7 +39,8 @@ void	remove_newline(std::string &str)
 	}
 }
 
-//////////////////////////////
+/* ************************************************************************** */
+/* MAIN */
 
 void	Server::parse_lines_forest(std::string name, std::string value)
 {
@@ -117,9 +97,14 @@ void	Server::parse_lines()
 }
 
 void	Server::addLocation(std::string value)
-{
-	this->locations[locations_count].path.setValue(value);
-	this->locations_count++;
+{	
+	if (locations_count < MAX_LOCATIONS)
+	{	
+		this->locations[locations_count].path.setValue(value);
+		this->locations_count++;
+	}
+	else
+		std::cerr << "MAX LOCATIONS (" << MAX_LOCATIONS <<  ") reached, increases in Config.hpp" << std::endl;
 }
 
 // Return the last added location block
@@ -131,5 +116,27 @@ Location&	Server::currentLocation()
 	{
 		std::cout << "Instructions before any locations block" << std::endl;
 		throw (std::exception());
+	}
+}
+
+/* ************************************************************************** */
+/* DEBUG */
+
+std::string	Server::getTextfile()
+{
+	return (this->textfile);
+}
+
+void		Server::print_config()
+{
+	// **ADD KEYS HERE
+	listen.print();
+	server_name.print();
+	client_max_body_size.print();
+	error_page.print();
+	for (size_t i = 0; i < locations_count; i++)
+	{
+		std::cout << "(" << i << ") ";
+		locations[i].print_location();
 	}
 }

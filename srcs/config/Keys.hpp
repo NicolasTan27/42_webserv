@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:49:18 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/08 15:13:38 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/09 14:46:20 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class Keys
 	public:
 		void	setValue(std::string newValue);
 		void	setValue(std::string newValue, std::string delim);
+		void	addValue(std::string newValue);
 		void	print();
 };
 

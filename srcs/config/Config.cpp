@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:41:21 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/08 17:01:52 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/09 15:52:23 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,5 @@ void	Config::addServer(std::string server_block)
 		servers_count++;
 	}
 	else
-		std::cout << "MAX SERV AT " << MAX_SERV << " IGNORING OTHERS" << std::endl; 
+		std::cout << "MAX SERV (" << MAX_SERV << ") reached, increase in Config.hpp" << std::endl; 
 }
