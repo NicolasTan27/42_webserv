@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 14:04:34 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/09 18:12:04 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/10 00:43:06 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ Request::Request(std::string request) : request(request),
 	method("method", "GET", ""),
 	path("path", "/", ""),
 	version("version", "HTTP", ""),
-	host("host", "127.0.0.1:default", ":"),
+	host("host", "127.0.0.1:8080", ":"),
 	body("body", "", "")
 {
 	parse_request();

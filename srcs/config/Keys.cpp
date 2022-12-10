@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:48:55 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/09 14:52:59 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/10 01:18:12 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ std::string	&Keys::operator[](size_t n)
 
 void	Keys::setValue(std::string newValue)
 {
-	this->values.clear();
+	if (!newValue.empty())
+		this->values.clear();
 
 	size_t delim_pos = 0;
 	if (this->delimiter != "")
@@ -40,15 +41,17 @@ void	Keys::setValue(std::string newValue)
 		while (delim_pos != std::string::npos)
 		{
 			delim_pos = newValue.find(this->delimiter);
-			if (delim_pos == 0)
+			if (delim_pos == 0 && newValue.empty())
 				break;
-			addValue(newValue.substr(0, delim_pos));
+			if (!newValue.substr(0, delim_pos).empty())
+				addValue(newValue.substr(0, delim_pos));
 			newValue = newValue.substr(delim_pos + 1);
 		}
 	}
 	else
 	{
-		addValue(newValue);
+		if (!newValue.empty() || this->values.empty())
+			addValue(newValue);
 	}
 }
 

@@ -1,3 +1,3 @@
-../config/Keys.o: ../config/Keys.cpp ../config/Keys.hpp
+Keys.o: Keys.cpp Keys.hpp
 
-../config/Keys.hpp:
+Keys.hpp:
