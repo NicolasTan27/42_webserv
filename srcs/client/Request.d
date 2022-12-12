@@ -1,5 +1,6 @@
-Request.o: Request.cpp Request.hpp ../config/Keys.hpp
+srcs/client/Request.o: srcs/client/Request.cpp srcs/client/Request.hpp \
+  srcs/client/../config/Keys.hpp
 
-Request.hpp:
+srcs/client/Request.hpp:
 
-../config/Keys.hpp:
+srcs/client/../config/Keys.hpp:

@@ -31242,7 +31242,7 @@ class Config
 };
 # 14 "srcs/main.cpp" 2
 # 1 "srcs/client/Request.hpp" 1
-# 18 "srcs/client/Request.hpp"
+# 20 "srcs/client/Request.hpp"
 class Request {
 
  public:
@@ -34231,30 +34231,21 @@ extern int epoll_pwait2 (int __epfd, struct epoll_event *__events,
 # 157 "/usr/include/x86_64-linux-gnu/sys/epoll.h" 3 4
 }
 # 23 "srcs/main.cpp" 2
-
-
-
-int server()
+# 118 "srcs/main.cpp"
+int main()
 {
-
-
  int server_fd = socket(2, SOCK_STREAM, 0);
  if (server_fd < 0)
  {
   std::cerr << "Could not create socket" << std::endl;
   return (1);
  }
-# 52 "srcs/main.cpp"
+
  struct sockaddr_in address;
  std::memset((char *) &address, 0, sizeof(address));
  address.sin_family = 2;
  address.sin_addr.s_addr = htonl(((in_addr_t) 0x00000000));
  address.sin_port = htons(8000);
-
-
-
-
-
 
  if (bind(server_fd, (struct sockaddr *) &address, sizeof(address)) < 0)
  {
@@ -34268,47 +34259,65 @@ int server()
   return (1);
  }
 
+ struct pollfd fds[1024];
+ fds[0].fd = server_fd;
+ fds[0].events = 0x001;
+ int nfds = 1;
  int addrlen = sizeof(address);
  while (1)
  {
   std::cout << "====== WAITING FOR NEW CONNECTION =====" << std::endl;
-  int new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
-  if (new_socket < 0)
+  int poll_ret = poll(fds, nfds, -1);
+  if (poll_ret < 0)
   {
-   std::cerr << "In accept" << std::endl;
+   std::cerr << "Poll error" << std::endl;
    return (1);
   }
-  char buffer[30000];
-  int rd = read(new_socket, buffer, 30000);
-  if (rd < 0)
+  if (poll_ret == 0)
   {
-   std::cerr << "Read error" << std::endl;
+   std::cerr << "Poll timeout" << std::endl;
    return (1);
   }
-  std::string request(buffer, rd);
-  std::cout << request << std::endl;
-  char response[] = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
-  write(new_socket, response, sizeof(response));
-  std::cout << "===== RESPONSE SENT =====" << std::endl;
-  close(new_socket);
+  for (int i = 0; i < nfds; i++)
+  {
+   if (fds[i].revents == 0)
+    continue;
+   if (fds[i].revents != 0x001)
+   {
+    std::cerr << "Error in poll" << std::endl;
+    return (1);
+   }
+   if (i == 0)
+   {
+    int new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
+    if (new_socket < 0)
+    {
+     std::cerr << "In accept" << std::endl;
+     return (1);
+    }
+    fds[nfds].fd = new_socket;
+    fds[nfds].events = 0x001;
+    nfds++;
+   }
+   else
+   {
+    char buffer[30000];
+    int rd = read(fds[i].fd, buffer, 30000);
+    if (rd < 0)
+    {
+     std::cerr << "Read error" << std::endl;
+     return (1);
+    }
+    std::string request(buffer, rd);
+    std::cout << request << std::endl;
+    char response[] = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
+    write(fds[i].fd, response, sizeof(response));
+    std::cout << "===== RESPONSE SENT =====" << std::endl;
+    close(fds[i].fd);
+    fds[i].fd = -1;
+   }
+  }
  }
-
  close(server_fd);
-}
-
-int main()
-{
- char path[] = "./config_files/default.conf";
- try
- {
-  Config conf(path);
- }
- catch (std::exception& e)
- {
-  std::cerr << e.what() << std::endl;
-  return (1);
- }
- if (server())
-  return (1);
- return (0);
+ return (1);
 }

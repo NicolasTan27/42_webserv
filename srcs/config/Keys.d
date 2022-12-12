@@ -1,3 +1,3 @@
-Keys.o: Keys.cpp Keys.hpp
+srcs/config/Keys.o: srcs/config/Keys.cpp srcs/config/Keys.hpp
 
-Keys.hpp:
+srcs/config/Keys.hpp:

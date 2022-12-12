@@ -1,5 +1,6 @@
-Location.o: Location.cpp Location.hpp Keys.hpp
+srcs/config/Location.o: srcs/config/Location.cpp srcs/config/Location.hpp \
+  srcs/config/Keys.hpp
 
-Location.hpp:
+srcs/config/Location.hpp:
 
-Keys.hpp:
+srcs/config/Keys.hpp:

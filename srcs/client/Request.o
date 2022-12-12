@@ -1,13 +1,13 @@
-# 1 "Request.cpp"
+# 1 "srcs/client/Request.cpp"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 353 "<built-in>" 3
 # 1 "<command line>" 1
 # 1 "<built-in>" 2
-# 1 "Request.cpp" 2
-# 13 "Request.cpp"
-# 1 "./Request.hpp" 1
-# 16 "./Request.hpp"
+# 1 "srcs/client/Request.cpp" 2
+# 13 "srcs/client/Request.cpp"
+# 1 "srcs/client/Request.hpp" 1
+# 16 "srcs/client/Request.hpp"
 # 1 "/usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/algorithm" 1 3
 # 59 "/usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/algorithm" 3
 
@@ -9969,10 +9969,10 @@ namespace std __attribute__ ((__visibility__ ("default")))
 # 5894 "/usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/bits/stl_algo.h" 3
 }
 # 62 "/usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/algorithm" 2 3
-# 17 "./Request.hpp" 2
+# 17 "srcs/client/Request.hpp" 2
 
-# 1 "./../config/Keys.hpp" 1
-# 16 "./../config/Keys.hpp"
+# 1 "srcs/client/../config/Keys.hpp" 1
+# 16 "srcs/client/../config/Keys.hpp"
 # 1 "/usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/vector" 1 3
 # 59 "/usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/vector" 3
 
@@ -13448,7 +13448,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 # 988 "/usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/bits/vector.tcc" 3
 }
 # 71 "/usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/vector" 2 3
-# 17 "./../config/Keys.hpp" 2
+# 17 "srcs/client/../config/Keys.hpp" 2
 # 1 "/usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/string" 1 3
 # 37 "/usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/string" 3
 
@@ -20347,7 +20347,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 }
 # 55 "/usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/string" 2 3
-# 18 "./../config/Keys.hpp" 2
+# 18 "srcs/client/../config/Keys.hpp" 2
 # 1 "/usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/iostream" 1 3
 # 37 "/usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/iostream" 3
 
@@ -28504,7 +28504,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
 }
-# 19 "./../config/Keys.hpp" 2
+# 19 "srcs/client/../config/Keys.hpp" 2
 
 class Keys
 {
@@ -28529,7 +28529,7 @@ class Keys
   void addValue(std::string newValue);
   void print();
 };
-# 19 "./Request.hpp" 2
+# 19 "srcs/client/Request.hpp" 2
 
 class Request {
 
@@ -28552,7 +28552,7 @@ class Request {
   Keys host;
   Keys body;
 };
-# 14 "Request.cpp" 2
+# 14 "srcs/client/Request.cpp" 2
 
 Request::Request() {}
 
@@ -28561,7 +28561,7 @@ Request::Request(std::string request) : request(request),
  method("method", "GET", ""),
  path("path", "/", ""),
  version("version", "HTTP", ""),
- host("host", "127.0.0.1:default", ":"),
+ host("host", "127.0.0.1:8080", ":"),
  body("body", "", "")
 {
  parse_request();
@@ -28605,7 +28605,6 @@ void Request::parse_request()
    }
   }
   i++;
-
  }
 }
 
