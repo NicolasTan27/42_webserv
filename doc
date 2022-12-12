@@ -1,1 +1,9 @@
+
+# website to test different type of request
 https://hoppscotch.io/
+
+# to test different host :
+curl -I -k -H "Host:cdn.site.com" 127.0.0.1:8000
+
+# nginx tester
+https://nginx.viraptor.info/

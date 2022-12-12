@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:49:18 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/09 14:46:20 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/12 16:30:11 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ class Keys
 		Keys();
 		Keys(std::string _name, std::string _value, std::string _delimiter);
 		~Keys();
-		std::string	&operator[](size_t n);
+		
 		
 	public:
 		std::string					name;			// name of the keyword
@@ -39,6 +39,10 @@ class Keys
 		void	setValue(std::string newValue, std::string delim);
 		void	addValue(std::string newValue);
 		void	print();
+
+	public:
+		std::string	&operator[](size_t n);
+		bool 		operator==(const Keys &rhs) const;
 };
 
 #endif

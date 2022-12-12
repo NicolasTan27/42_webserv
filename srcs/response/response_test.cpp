@@ -1,39 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Context.hpp                                        :+:      :+:    :+:   */
+/*   response_test.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/09 23:43:07 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/12 17:58:14 by ntan             ###   ########.fr       */
+/*   Created: 2022/12/12 15:40:42 by ntan              #+#    #+#             */
+/*   Updated: 2022/12/12 17:59:55 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CONTEXT_HPP
-# define CONTEXT_HPP
-
-# include "../config/Config.hpp"
-# include "../client/Request.hpp"
-
+# include "Context.hpp"
+# include <sys/stat.h>
+# include <fcntl.h>
+# include <unistd.h>
 # include <string>
 # include <iostream>
 
-class Context {
-	public:
-		Context(Config conf, Request req);
+int main()
+{
+	int fd = open("request_example", O_RDONLY);
+	char buffer[30000];
+	int rd = read(fd, buffer, 30000);
+	std::string str(buffer, rd);
 
-	// private:
-		Config	config;
-		Request	request;
-		void	print_context();
+	Config 	conf("./default.conf");
+	Request req(str);
+	Context context(conf, req);
 
-	private:
-		void	find_server();
-		void	find_location();
-	
-	public:
-		std::vector<Server>	servers;
-};
+	context.config.printServers();
+	context.request.print_request();
+	context.print_context();
 
-#endif
+	return (0);
+}

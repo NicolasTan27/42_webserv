@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 14:04:34 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/10 00:43:06 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/12 18:16:10 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ Request::Request(std::string request) : request(request),
 	method("method", "GET", ""),
 	path("path", "/", ""),
 	version("version", "HTTP", ""),
-	host("host", "127.0.0.1:8080", ":"),
+	host("host", "127.0.0.1:8000", ":"),
 	body("body", "", "")
 {
 	parse_request();
@@ -70,7 +70,11 @@ void	Request::parse_request_forest(std::string name, std::string value)
 {
 	value.erase(std::remove_if(value.begin(), value.end(), isspace), value.end());
 	if (name == "Host")
+	{
 		host.setValue(value);
+		if (host.values.size() < 2 || host.values[1].empty())
+			host.values.push_back("8000"); // Defaut port if not given in the request
+	}
 }
 
 /* ************************************************************************** */
@@ -78,9 +82,11 @@ void	Request::parse_request_forest(std::string name, std::string value)
 
 void	Request::print_request()
 {
+	std::cout << "----- [REQUEST] -----" << std::endl;
 	method.print();
 	path.print();
 	version.print();
 	host.print();
 	body.print();
+	std::cout << std::endl;
 }

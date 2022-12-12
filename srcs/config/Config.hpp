@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:41:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/09 17:30:05 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/12 15:49:36 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ class Config
 		Config(char const *path);
 		Config();
 		~Config();
-		Config(const Config &other);
-		Config &operator=(const Config &other);
 		
 	public:
 		std::string		getConfig();

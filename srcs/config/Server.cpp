@@ -6,13 +6,20 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:47:35 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/09 17:15:00 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/12 19:07:20 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "Server.hpp"
 
-Server::Server() {}
+Server::Server() :	locations_count(0),
+	listen("listen", "0.0.0.0:8000", ":"),
+	server_name("server_name", "", ""),
+	client_max_body_size("client_max_body_size", "100", ""),
+	error_page("error_page", "404,errors_pages/error404.html", ",")
+	{
+		locations[0] = Location();
+	}
 
 Server::~Server() {}
 
@@ -20,11 +27,12 @@ Server::Server(std::string text) :	textfile(text), locations_count(0),
 	// **ADD KEYS HERE, DEFAULT VALUES, DON'T LET SPACES BETWEEN VALUES
 	// usage : object("object", "values seperated by delim", "delim") 
 	// -> if no delimiter given, it will only consider a whole value
-	listen("listen", "0.0.0.0:8080", ":"),
+	listen("listen", "0.0.0.0:8000", ":"),
 	server_name("server_name", "", ""),
 	client_max_body_size("client_max_body_size", "100", ""),
-	error_page("error_page", "404,errors_pages/error404.html", ",")								
+	error_page("error_page", "404,errors_pages/error404.html", ",")							
 {
+	locations[0] = Location();
 	parse_lines();
 } 
 
@@ -46,7 +54,15 @@ void	Server::parse_lines_forest(std::string name, std::string value)
 {
 	//	**ADD KEYS HERE
 	if (name == "listen")
+	{
 		listen.setValue(value);
+		if ((listen.values.size() < 2 || listen.values[1].empty()) 
+				&& listen.values[0].find(".") != std::string::npos)
+			listen.values.push_back("8000");
+		if ((listen.values.size() < 2 || listen.values[1].empty()) 
+				&& listen.values[0].find(".") == std::string::npos)
+			listen.values.insert(listen.values.begin(), "0.0.0.0");
+	}
 	else if (name == "server_name")
 		server_name.setValue(value);
 	else if (name == "client_max_body_size")
@@ -134,9 +150,15 @@ void		Server::print_config()
 	server_name.print();
 	client_max_body_size.print();
 	error_page.print();
-	for (size_t i = 0; i < locations_count; i++)
+	if (locations_count > 0)
 	{
-		std::cout << "(" << i << ") ";
-		locations[i].print_location();
+		for (size_t i = 0; i < locations_count; i++)
+		{
+			std::cout << "(" << i << ") ";
+			locations[i].print_location();
+		}
 	}
+	else
+		locations[0].print_location();
+		
 }

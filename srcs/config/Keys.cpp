@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 14:48:55 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/10 01:18:12 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/12 18:19:12 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,14 @@ Keys::~Keys() {}
 
 std::string	&Keys::operator[](size_t n)
 {
+	if (n > this->values.size())
+		throw (std::out_of_range("Keys::operator[]: out of range"));
 	return (this->values[n]);
+}
+
+bool 		Keys::operator==(const Keys &rhs) const
+{
+	return (this->values == rhs.values);
 }
 
 /////////////////////////

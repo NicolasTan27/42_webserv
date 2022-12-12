@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:41:21 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/09 15:52:23 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/12 18:18:04 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ Config::~Config() {}
 
 Config::Config(char const *path) : servers_count(0)
 {
+	servers[0] = Server();
 	read_config_file(path);
 	parse_server_blocks();
 }

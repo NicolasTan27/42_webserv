@@ -31223,8 +31223,6 @@ class Config
   Config(char const *path);
   Config();
   ~Config();
-  Config(const Config &other);
-  Config &operator=(const Config &other);
 
  public:
   std::string getConfig();
@@ -34231,7 +34229,7 @@ extern int epoll_pwait2 (int __epfd, struct epoll_event *__events,
 # 157 "/usr/include/x86_64-linux-gnu/sys/epoll.h" 3 4
 }
 # 23 "srcs/main.cpp" 2
-# 118 "srcs/main.cpp"
+# 42 "srcs/main.cpp"
 int main()
 {
  int server_fd = socket(2, SOCK_STREAM, 0);
