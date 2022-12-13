@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 23:43:07 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/12 17:58:14 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/13 14:32:53 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,14 @@ class Context {
 		void	find_server();
 		void	find_location();
 	
-	public:
+	private:
+		// used for parsing
 		std::vector<Server>	servers;
+
+	public:
+		// used for response
+		Server				server;
+		Location			location;
 };
 
 #endif

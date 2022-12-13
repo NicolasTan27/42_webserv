@@ -15,6 +15,12 @@
 Context::Context(Config conf, Request req) : config(conf), request(req)
 {
 	find_server();
+	this->server = this->servers[0];
+
+	this->location = Location();
+	find_location();
+	this->server.locations_count = 1;
+	this->server.locations[0] = this->location;
 }
 
 void	Context::find_server()
@@ -23,6 +29,7 @@ void	Context::find_server()
 	if (this->config.servers_count == 0)
 	{
 		this->servers.push_back(this->config.servers[0]);
+		std::cout << "No server corresponding in config file, using default server" << std::endl;
 		return ;
 	}
 
@@ -61,13 +68,30 @@ void	Context::find_server()
 	}
 }
 
+// prioritize exact path, then / path, then default location if no location found
 void	Context::find_location()
 {
 	if (this->servers.empty())
 		return ;
 
 	// Search a location with exact same path
-	
+	for (size_t i = 0; i < this->server.locations_count; i++)
+	{
+		if (this->server.locations[i].path == this->request.path)
+		{
+			this->location = this->servers[0].locations[i];
+			return;
+		}
+	}
+
+	for (size_t i = 0; i < this->server.locations_count; i++)
+	{
+		if (this->server.locations[i].path.values[0] == "/")
+		{
+			this->location = this->server.locations[i];
+			return;
+		}
+	}
 }
 
 /* ************************************************************************** */
@@ -79,5 +103,5 @@ void	Context::print_context()
 	if (this->servers.empty())
 		std::cout << "No server found" << std::endl;
 	else
-		this->servers[0].print_config();
+		this->server.print_config();
 }
