@@ -6,7 +6,7 @@
 #    By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/03 14:56:07 by ntan              #+#    #+#              #
-#    Updated: 2022/12/12 15:46:10 by ntan             ###   ########.fr        #
+#    Updated: 2022/12/14 15:38:28 by ntan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,9 @@ SRCS			=	response_test.cpp\
 					../config/Config.cpp\
 					../config/Server.cpp\
 					../config/Location.cpp\
-					../client/Request.cpp
+					../client/Request.cpp\
+					Status.cpp\
+					Response.cpp
 				
 OBJS			= 	$(SRCS:.cpp=.o)
 

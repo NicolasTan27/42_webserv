@@ -6,7 +6,7 @@
 #    By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/03 14:56:07 by ntan              #+#    #+#              #
-#    Updated: 2022/12/12 18:13:58 by ntan             ###   ########.fr        #
+#    Updated: 2022/12/14 15:55:24 by ntan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,10 @@ SRCS			=	srcs/main.cpp\
 					srcs/config/Location.cpp\
 					srcs/config/Server.cpp\
 					srcs/client/Request.cpp\
-					srcs/response/Context.cpp
+					srcs/response/Context.cpp\
+					srcs/response/Response.cpp\
+					srcs/response/Status.cpp\
+					srcs/webserver/Webserver.cpp
 
 OBJS			= 	$(SRCS:.cpp=.o)
 

@@ -1,43 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Webserver.hpp                                      :+:      :+:    :+:   */
+/*   Status.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/09 17:18:18 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/14 16:50:54 by ntan             ###   ########.fr       */
+/*   Created: 2022/12/14 14:06:44 by ntan              #+#    #+#             */
+/*   Updated: 2022/12/14 14:14:26 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WEBSERVER_HPP
-# define WEBSERVER_HPP
 
-#include <unistd.h>
-#include <cstring>
-#include <iostream>
-#include <sys/socket.h>
-#include "netinet/in.h"
-#include <poll.h>
-#include <sys/epoll.h>
-#include <cstring>
+#ifndef STATUS_HPP
+# define STATUS_HPP
 
-# include "../config/Config.hpp"
-# include "../client/Request.hpp"
-# include "../response/Response.hpp"
+# include <string>
+# include <map>
 
-#define PORT 8000
-
-class Webserver {
-	
-	public:
-		Webserver(const char* path_to_config);
+class Status {
 
 	public:
-		int		start();
+		Status();
+
+	private:
+		std::map<std::string, std::string>	codes_map;
 
 	public:
-		Config	config;
+		std::string get_message(std::string code);
 };
 
 #endif

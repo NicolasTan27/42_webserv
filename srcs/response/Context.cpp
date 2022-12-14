@@ -15,7 +15,11 @@
 Context::Context(Config conf, Request req) : config(conf), request(req)
 {
 	find_server();
-	this->server = this->servers[0];
+
+	if (!this->servers.empty())
+		this->server = this->servers[0];
+	else
+		this->server = Server();
 
 	this->location = Location();
 	find_location();
