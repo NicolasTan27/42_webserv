@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 17:18:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/14 16:51:16 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/14 17:24:52 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,13 @@ int	Webserver::start()
 	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = htonl(INADDR_ANY);
 	address.sin_port = htons(PORT);
+
+	int opt = 1;
+	if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, (char *) &opt, sizeof(opt)) < 0)
+	{
+		std::cerr << "Setsockopt failed" << std::endl;
+		return (1);
+	}
 
 	if (bind(server_fd, (struct sockaddr *) &address, sizeof(address)) < 0)
 	{
@@ -94,7 +101,7 @@ int	Webserver::start()
 					return (1);
 				}
 				std::string str_buf(buffer, rd);
-				std::cout << str_buf << std::endl;
+				// std::cout << str_buf << std::endl;
 				// char message[] = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
 								
 				Request		request(str_buf);
