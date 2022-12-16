@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 17:18:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/14 17:24:52 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/16 14:27:52 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int	Webserver::start()
 					return (1);
 				}
 				std::string str_buf(buffer, rd);
+				// std::cout << "raw : " ;
 				// std::cout << str_buf << std::endl;
 				// char message[] = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
 								

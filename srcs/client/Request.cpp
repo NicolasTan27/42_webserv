@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 14:04:34 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/12 18:16:10 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/16 15:17:58 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	Request::parse_request()
 			method.setValue(http[0]);
 			path.setValue(http[1]);
 			version.setValue(http[2]);
+			if (version.values[0].find("\r") != std::string::npos)
+				version.values[0].erase(version.values[0].find("\r"));
 		}
 		else
 		{
@@ -59,7 +61,12 @@ void	Request::parse_request()
 			else									// if in body part (no ":" found on the line)
 			{
 				if (!line.empty())
+				{
+					if (line.find("\r") != std::string::npos)
+						line.erase(line.find("\r"));
 					body.addValue(line);
+				}
+				
 			}
 		}
 		i++;
@@ -82,11 +89,16 @@ void	Request::parse_request_forest(std::string name, std::string value)
 
 void	Request::print_request()
 {
+	std::cout << std::endl;
 	std::cout << "----- [REQUEST] -----" << std::endl;
 	method.print();
 	path.print();
 	version.print();
+	// // std::cout << "name: " << version.values[0] << ";" << std::endl;
+	// for (size_t i = 0; i < version.values[0].size(); i++)
+	// {
+	// 	std::cout << (int) version.values[0][i] << std::endl;
+	// }
 	host.print();
 	body.print();
-	std::cout << std::endl;
 }
