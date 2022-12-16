@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/16 15:33:50 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/16 18:32:33 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,16 @@ int		Response::check_max_body_size()
 	return (0);
 }
 
+int		Response::check_file()
+{
+	std::string 	path = context.location.root[0] + context.request.path[0]; 
+	std::fstream	fs(path.c_str(), std::fstream::in);
+
+	if (fs.is_open())
+		return (fs.close(), 0);
+	return (1);
+}
+
 void	Response::set_status(std::string code)
 {
 	this->version_code_message[0] = "HTTP/1.1";
@@ -86,7 +96,8 @@ void	Response::set_status(std::string code)
 
 void	Response::make_body()
 {
-	
+	std::string temp = "Status code : " + version_code_message[1] + "/" + version_code_message[2];
+	body[0] = temp;
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -123,3 +134,4 @@ void	Response::print_response()
 	server.print();
 	body.print();
 }
+ 

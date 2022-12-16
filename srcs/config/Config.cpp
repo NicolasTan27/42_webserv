@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:41:21 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/12 18:18:04 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/16 18:02:27 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	Config::printServers()
 		std::cout << "------[ SERVER : " << i << " ]------" << std::endl;
 		servers[i].print_config();
 		std::cout << std::endl;
-	}
+	} 
 }
 
 ///////// STATIC FUNCTIONS /////////
