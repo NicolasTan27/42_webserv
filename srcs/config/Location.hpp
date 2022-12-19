@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 17:15:49 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/09 15:24:55 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/19 15:30:35 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ class Location {
 		Keys	cgi;					// 
 		Keys	default_dir_request;	//	default file if the request is a directory
 		Keys	upload_dir;				// 	allow this location to accept upload and define a directory to store them
+		// Keys	index;
 };
 
 #endif

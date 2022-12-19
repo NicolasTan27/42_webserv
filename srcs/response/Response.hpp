@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/16 18:04:41 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/19 19:44:00 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,14 @@
 
 # include "Context.hpp"
 # include "Status.hpp"
+
 # include <algorithm>
 # include <fstream>
+# include <cstdlib>
+# include <sstream>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <unistd.h>
 
 class Response {
 	public:
@@ -43,7 +49,9 @@ class Response {
 		int		check_max_body_size();
 		int		check_file();    
 		
-		void	make_body();						// generate the body according to the status
+		void		make_body();						// generate the body according to the status
+		std::string	read_html(std::string path);
+		// std::string	read_png(std::string path);
 		
 		void	make_response();					// assemble response in http format
 

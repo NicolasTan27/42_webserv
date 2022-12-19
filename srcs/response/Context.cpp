@@ -72,6 +72,22 @@ void	Context::find_server()
 	}
 }
 
+void	string_to_vector_with_delim(std::vector<std::string> &res, std::string str, std::string delim)
+{
+	size_t	delim_pos = 0;
+	str.erase(str.begin());
+
+	while (delim_pos != std::string::npos)
+	{
+		delim_pos = str.find(delim);
+		if (delim_pos == 0 || str.empty())
+			break;
+		if (!str.substr(0, delim_pos).empty())
+			res.push_back(str.substr(0, delim_pos));
+		str = str.substr(delim_pos + 1);
+	}
+}
+
 // prioritize exact path, then / path, then default location if no location found
 void	Context::find_location()
 {
@@ -88,6 +104,41 @@ void	Context::find_location()
 		}
 	}
 
+	// Search best matching location
+	std::vector<int> match_count;
+	for (size_t i = 0; i < this->server.locations_count; i++)
+	{
+		std::vector<std::string> parsed_lpath;
+		string_to_vector_with_delim(parsed_lpath, server.locations[i].path[0], "/");
+		std::vector<std::string> parsed_rpath;
+		string_to_vector_with_delim(parsed_rpath, request.path[0], "/");
+
+		if (parsed_lpath.size() > parsed_rpath.size())
+			match_count.push_back(0);
+		else
+		{
+			int res = 0;
+			std::vector<std::string>::iterator beg = parsed_lpath.begin();
+			std::vector<std::string>::iterator end = parsed_lpath.end();
+			std::vector<std::string>::iterator rbeg = parsed_rpath.begin();
+			std::vector<std::string>::iterator rend = parsed_rpath.end();
+			for (; beg != end && rbeg != rend; beg++, rbeg++)
+			{
+				if (*beg == *rbeg)
+					res++;
+				else
+					break;
+			}
+			match_count.push_back(res);
+		}
+	}
+	if (*std::max_element(match_count.begin(), match_count.end()) != 0)
+	{
+		this->location = this->server.locations[std::max_element(match_count.begin(), match_count.end()) - match_count.begin()];
+		return;
+	}
+
+	// Use default / location
 	for (size_t i = 0; i < this->server.locations_count; i++)
 	{
 		if (this->server.locations[i].path.values[0] == "/")

@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:41:21 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/16 18:02:27 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/19 15:25:46 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ int	Config::parse_server_blocks()
 	std::string open_bracket = "{";
 	std::string close_bracket = "}";
 	size_t pos = 0;
-	size_t index = 0;
+	size_t i = 0;
 	while (pos != std::string::npos)
 	{
-		pos = this->textfile.find(keyword, index);
+		pos = this->textfile.find(keyword, i);
 		if (pos == std::string::npos)
 			break;
 		size_t first = textfile.find(open_bracket, pos);
@@ -100,7 +100,7 @@ int	Config::parse_server_blocks()
 			print_exit("ERROR: Incorrect use of { or } at pos: ", last);
 		first += 2;
 		addServer(textfile.substr(first , last - first));
-		index = last;
+		i = last;
 	}
 	return (0);
 }

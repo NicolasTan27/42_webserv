@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/16 18:32:33 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/19 19:47:30 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	Response::check_response()
 		return (set_status("413"));
 	if (check_version())
 		return (set_status("505"));
+	if (check_file())
+		return (set_status("404"));
 	set_status("200");
 }
 
@@ -76,10 +78,28 @@ int		Response::check_max_body_size()
 int		Response::check_file()
 {
 	std::string 	path = context.location.root[0] + context.request.path[0]; 
-	std::fstream	fs(path.c_str(), std::fstream::in);
+	// std::fstream	fs(path.c_str(), std::fstream::in);
 
-	if (fs.is_open())
-		return (fs.close(), 0);
+	// if (fs.is_open())
+	// 	return (fs.close(), 0);
+
+	struct stat s;
+	if( stat(path.c_str(),&s) == 0 )
+	{
+		if( s.st_mode & S_IFDIR )
+		{
+			std::cout << path << " is a directory !" << std::endl;
+		}
+		else if( s.st_mode & S_IFREG )
+		{
+			std::cout << path << " is a file !" << std::endl;
+		}
+		else
+		{
+			std::cout << path << " is something else ?" << std::endl;
+		}
+		return (0);
+	}
 	return (1);
 }
 
@@ -94,10 +114,52 @@ void	Response::set_status(std::string code)
 ///////////////////////// MAKE BODY ACCORDING TO STATUS /////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
+std::string		Response::read_html(std::string path)
+{
+	std::fstream	fs(path.c_str(), std::fstream::in);
+	std::string		html;
+	std::string		line;
+
+	if (fs.is_open())
+	{
+		while (getline(fs, line))
+		{
+			if ((line[0] == '<' && line[1] == '!')|| line.empty())
+				continue;
+			html.append(line + "\n");
+		}
+	}
+	return (html);
+}
+
+// std::string		Response::read_png(std::string path)
+// {
+// 	std::ifstream input(path.c_str(), std::ios::binary);
+//     std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(input), {});
+// 	std::string res;
+// 	for (std::vector<unsigned char>::iterator beg = buffer.begin(); beg != buffer.end(); beg++)
+// 	{
+// 		res.append(std::string(1, *beg + 48));
+// 	}
+// 	return (res);
+// }
+
 void	Response::make_body()
 {
-	std::string temp = "Status code : " + version_code_message[1] + "/" + version_code_message[2];
+	std::string temp;
+	if (context.request.path[0].find_last_of(".html") == context.request.path[0].size() - 1)
+		temp = read_html(context.location.root[0] + context.request.path[0]);
+	// else if (context.request.path[0].find_last_of(".png") == context.request.path[0].size() - 1)
+	// // 	temp = read_png(context.location.root[0] + context.request.path[0]);
+	else
+		temp = "Status code : " + version_code_message[1] + "/" + version_code_message[2];
 	body[0] = temp;
+
+	int i = body[0].size();
+	std::stringstream digit;
+	digit << i;
+	std::string numberString(digit.str());
+	content_length[0] = numberString;
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -130,6 +192,7 @@ void	Response::print_response()
 	std::cout << std::endl;
 	std::cout << "----- [RESPONSE] -----" << std::endl;
 	version_code_message.print();
+	content_length.print();
 	content_type.print();
 	server.print();
 	body.print();

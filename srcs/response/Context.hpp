@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 23:43:07 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/13 14:32:53 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/19 17:37:43 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 # include <string>
 # include <iostream>
+# include <algorithm>
 
 class Context {
 	public:

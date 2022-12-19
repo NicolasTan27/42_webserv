@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:47:35 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/12 19:07:20 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/19 15:31:00 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ void	Server::parse_lines_forest(std::string name, std::string value)
 		currentLocation().default_dir_request.setValue(value);
 	else if (name == "upload_dir")
 		currentLocation().upload_dir.setValue(value);
+	// else if (name == "index")
+	// 	currentLocation().index.setValue(value);
 	else
 		std::cout << "unrecognized instruction : " << name << ", skipping this keyword" << std::endl;
 }

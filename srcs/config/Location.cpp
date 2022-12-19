@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 17:15:52 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/09 23:46:41 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/19 15:30:31 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ Location::Location() :
 	cgi("cgi", "off", ""),
 	default_dir_request("default_dir_request", "dir_file", ""),
 	upload_dir("upload_dir", "./data/upload", "")
+	// index("index", "index", "")
 {}
 
 void	Location::print_location()
@@ -43,4 +44,6 @@ void	Location::print_location()
 	default_dir_request.print();
 	std::cout << "\t";
 	upload_dir.print();
+	// std::cout << "\t";
+	// index.print();
 }
