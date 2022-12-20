@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 17:18:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/16 14:27:52 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/20 15:55:39 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,10 @@ int	Webserver::start()
 				Response	response(context);
 				response.print_response();
 				
-				const char *message = response.get_response();
-				write(fds[i].fd, message, strlen(message));
+				// const char *message = response.get_response();
+				// write(fds[i].fd, message, strlen(message));
+				std::vector<unsigned char> vector_response = response.get_vector();
+				write(fds[i].fd, vector_response.data(), vector_response.size());
 				
 				std::cout << "===== RESPONSE SENT =====" << std::endl;
 				close(fds[i].fd);

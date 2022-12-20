@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/19 19:47:30 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/20 15:58:52 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,26 +78,16 @@ int		Response::check_max_body_size()
 int		Response::check_file()
 {
 	std::string 	path = context.location.root[0] + context.request.path[0]; 
-	// std::fstream	fs(path.c_str(), std::fstream::in);
-
-	// if (fs.is_open())
-	// 	return (fs.close(), 0);
 
 	struct stat s;
 	if( stat(path.c_str(),&s) == 0 )
 	{
 		if( s.st_mode & S_IFDIR )
-		{
 			std::cout << path << " is a directory !" << std::endl;
-		}
 		else if( s.st_mode & S_IFREG )
-		{
 			std::cout << path << " is a file !" << std::endl;
-		}
 		else
-		{
 			std::cout << path << " is something else ?" << std::endl;
-		}
 		return (0);
 	}
 	return (1);
@@ -114,7 +104,7 @@ void	Response::set_status(std::string code)
 ///////////////////////// MAKE BODY ACCORDING TO STATUS /////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-std::string		Response::read_html(std::string path)
+void		Response::read_html(std::string path)
 {
 	std::fstream	fs(path.c_str(), std::fstream::in);
 	std::string		html;
@@ -129,60 +119,114 @@ std::string		Response::read_html(std::string path)
 			html.append(line + "\n");
 		}
 	}
-	return (html);
-}
-
-// std::string		Response::read_png(std::string path)
-// {
-// 	std::ifstream input(path.c_str(), std::ios::binary);
-//     std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(input), {});
-// 	std::string res;
-// 	for (std::vector<unsigned char>::iterator beg = buffer.begin(); beg != buffer.end(); beg++)
-// 	{
-// 		res.append(std::string(1, *beg + 48));
-// 	}
-// 	return (res);
-// }
-
-void	Response::make_body()
-{
-	std::string temp;
-	if (context.request.path[0].find_last_of(".html") == context.request.path[0].size() - 1)
-		temp = read_html(context.location.root[0] + context.request.path[0]);
-	// else if (context.request.path[0].find_last_of(".png") == context.request.path[0].size() - 1)
-	// // 	temp = read_png(context.location.root[0] + context.request.path[0]);
-	else
-		temp = "Status code : " + version_code_message[1] + "/" + version_code_message[2];
-	body[0] = temp;
-
-	int i = body[0].size();
+	add_string_to_vector(html);
+	int i = html.size();
 	std::stringstream digit;
 	digit << i;
 	std::string numberString(digit.str());
 	content_length[0] = numberString;
+	// return (html);
+}
+
+void		Response::read_png(std::string path)
+{
+	std::ifstream input(path.c_str(), std::ios::binary);
+    std::vector<unsigned char> buffer((std::istreambuf_iterator<char>(input)), std::istreambuf_iterator<char>());
+
+	for (size_t i = 0; i < buffer.size(); i++)
+		charvec_response.push_back(buffer[i]);
+	// std::vector<unsigned char>::iterator beg = buffer.begin();
+	// std::cout << "vec : ";
+	// while (beg != buffer.end())
+	// {
+	// 	std::cout << (int) *beg;
+	// }
+	// std::string res;
+	// for (std::vector<unsigned char>::iterator beg = buffer.begin(); beg != buffer.end(); beg++)
+	// {
+	// 	res.append(std::string(1, *beg + 48));
+	// }
+	
+	content_type[0] = "image/jpeg";
+
+	int i = buffer.size();
+	std::stringstream digit;
+	digit << i;
+	std::string numberString(digit.str());
+	content_length[0] = numberString;
+	// return (res);
+}
+
+void	Response::make_body()
+{
+	std::string temp;
+	struct stat s;
+	std::string path = context.location.root[0] + context.request.path[0];
+	if( stat(path.c_str(),&s) == 0 )
+	{
+		if( s.st_mode & S_IFDIR )
+		{
+			// std::cout << path << " is a directory !" << std::endl;
+		}
+		else if( s.st_mode & S_IFREG )
+		{
+			// std::cout << path << " is a file !" << std::endl;
+			if (context.request.path[0].find_last_of(".html") == context.request.path[0].size() - 1)
+				read_html(context.location.root[0] + context.request.path[0]);
+			else if (context.request.path[0].find_last_of(".png") == context.request.path[0].size() - 1)
+				read_png(context.location.root[0] + context.request.path[0]);
+		}
+		else
+			temp = "Status code : " + version_code_message[1] + "/" + version_code_message[2];
+	}
+	else
+		temp = "Status code : " + version_code_message[1] + "/" + version_code_message[2];
+	body[0] = temp;
+   
+	// set body length
+	// int i = body[0].size();
+	// std::stringstream digit;
+	// digit << i;
+	// std::string numberString(digit.str());
+	// content_length[0] = numberString;
 }
 
 /////////////////////////////////////////////////////////////////////////////////
 ////////////////////////// FINAL RESPONSE ASSEMBLER /////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
+void	Response::add_string_to_vector(std::string str)
+{
+	for (size_t i = 0; i < str.size(); i++)
+		this->charvec_response.push_back(str[i]);
+}
+
 void	Response::make_response()
 {
 	// http 
-	this->response += version_code_message[0] + " " + version_code_message[1] + " " + version_code_message[2] + "\n";
+	// this->response += version_code_message[0] + " " + version_code_message[1] + " " + version_code_message[2] + "\n";
+	add_string_to_vector(version_code_message[0] + " " + version_code_message[1] + " " + version_code_message[2] + "\n");
 	
 	// header
-	this->response += server.name + ": " + server[0] + "\n";
-	this->response += content_length.name + ": " + content_length[0] + "\n";
-	this->response += content_type.name + ": " + content_type[0] + "\n";
+	// this->response += server.name + ": " + server[0] + "\n";
+	// this->response += content_length.name + ": " + content_length[0] + "\n";
+	// this->response += content_type.name + ": " + content_type[0] + "\n";
+	add_string_to_vector(server.name + ": " + server[0] + "\n");
+	add_string_to_vector(content_length.name + ": " + content_length[0] + "\n");
+	add_string_to_vector(content_type.name + ": " + content_type[0] + "\n");
 
 	// body
-	this->response += "\n" + body[0];
-}
+	this->response += "\n" + body[0]; 
+} 
 
 const char	*Response::get_response()
 {
 	return (response.c_str());
+}
+
+std::vector<unsigned char> Response::get_vector()
+{
+	return (charvec_response);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////// 

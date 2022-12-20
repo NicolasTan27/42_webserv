@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/19 19:44:00 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/20 15:54:03 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ class Response {
 		Status		status;
 		Context		context;
 		std::string	response;
+		std::vector<unsigned char>	charvec_response;
 
 	// Elements of the response
 	public:
@@ -50,14 +51,17 @@ class Response {
 		int		check_file();    
 		
 		void		make_body();						// generate the body according to the status
-		std::string	read_html(std::string path);
-		// std::string	read_png(std::string path);
+		void		add_string_to_vector(std::string str);
+		void	read_html(std::string path);
+		void	read_png(std::string path);
+
 		
 		void	make_response();					// assemble response in http format
 
 	public:
 		void	print_response();
 		const char	*get_response();
+		std::vector<unsigned char> get_vector();
 		
 };
 
