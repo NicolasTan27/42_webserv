@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 17:18:18 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/14 16:50:54 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/20 18:59:23 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@
 # include "../config/Config.hpp"
 # include "../client/Request.hpp"
 # include "../response/Response.hpp"
+# include "SocketInfo.hpp"
 
-#define PORT 8000
+// #define PORT 8000
 
 class Webserver {
 	

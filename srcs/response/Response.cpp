@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/20 15:58:52 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/20 18:51:56 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ Response::Response(Context cont) : context(cont),
 	body("body", "Hello world!", "")
 {
 	check_response();
-	make_body();
 	make_response();
 }
 
@@ -104,91 +103,73 @@ void	Response::set_status(std::string code)
 ///////////////////////// MAKE BODY ACCORDING TO STATUS /////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-void		Response::read_html(std::string path)
-{
-	std::fstream	fs(path.c_str(), std::fstream::in);
-	std::string		html;
-	std::string		line;
-
-	if (fs.is_open())
-	{
-		while (getline(fs, line))
-		{
-			if ((line[0] == '<' && line[1] == '!')|| line.empty())
-				continue;
-			html.append(line + "\n");
-		}
-	}
-	add_string_to_vector(html);
-	int i = html.size();
-	std::stringstream digit;
-	digit << i;
-	std::string numberString(digit.str());
-	content_length[0] = numberString;
-	// return (html);
-}
-
-void		Response::read_png(std::string path)
+void	Response::read_file(std::string path)
 {
 	std::ifstream input(path.c_str(), std::ios::binary);
     std::vector<unsigned char> buffer((std::istreambuf_iterator<char>(input)), std::istreambuf_iterator<char>());
 
 	for (size_t i = 0; i < buffer.size(); i++)
 		charvec_response.push_back(buffer[i]);
-	// std::vector<unsigned char>::iterator beg = buffer.begin();
-	// std::cout << "vec : ";
-	// while (beg != buffer.end())
-	// {
-	// 	std::cout << (int) *beg;
-	// }
-	// std::string res;
-	// for (std::vector<unsigned char>::iterator beg = buffer.begin(); beg != buffer.end(); beg++)
-	// {
-	// 	res.append(std::string(1, *beg + 48));
-	// }
-	
-	content_type[0] = "image/jpeg";
 
 	int i = buffer.size();
 	std::stringstream digit;
 	digit << i;
 	std::string numberString(digit.str());
 	content_length[0] = numberString;
-	// return (res);
+}
+
+int	Response::directory_listing(std::string path)
+{
+	DIR *dir; struct dirent *diread;
+    std::vector<char *> files;
+
+    if ((dir = opendir(path.c_str())) != NULL) {
+        while ((diread = readdir(dir)) != NULL) {
+            files.push_back(diread->d_name);
+        }
+        closedir(dir);
+    } else {
+        std::cerr << "opendir failed" << std::endl;
+        return (1);
+    }
+
+	for (std::vector<char *>::iterator it = files.begin(); it != files.end(); it++)
+	{
+		add_string_to_vector("<a href=\"./" + std::string(*it) + "\">" + std::string(*it) + "</a>\n");
+	}
+	return (0);
 }
 
 void	Response::make_body()
 {
-	std::string temp;
-	struct stat s;
-	std::string path = context.location.root[0] + context.request.path[0];
-	if( stat(path.c_str(),&s) == 0 )
+	add_string_to_vector("\n");
+	// GET
+	if (context.request.method[0] == "GET")
 	{
-		if( s.st_mode & S_IFDIR )
+		struct stat s;
+		std::string path = context.location.root[0] + context.request.path[0];
+		if( stat(path.c_str(),&s) == 0 )
 		{
-			// std::cout << path << " is a directory !" << std::endl;
+			if( s.st_mode & S_IFDIR )
+			{
+				// std::cout << path << " is a directory !" << std::endl;
+				directory_listing(path);
+			}
+			else if( s.st_mode & S_IFREG )
+			{
+				// std::cout << path << " is a file !" << std::endl;
+				// cgi ici
+				read_file(path);
+			}
+			else
+			{
+				set_status("418");
+				add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
+			}
 		}
-		else if( s.st_mode & S_IFREG )
-		{
-			// std::cout << path << " is a file !" << std::endl;
-			if (context.request.path[0].find_last_of(".html") == context.request.path[0].size() - 1)
-				read_html(context.location.root[0] + context.request.path[0]);
-			else if (context.request.path[0].find_last_of(".png") == context.request.path[0].size() - 1)
-				read_png(context.location.root[0] + context.request.path[0]);
-		}
-		else
-			temp = "Status code : " + version_code_message[1] + "/" + version_code_message[2];
+		if (version_code_message[1] != "200")
+			add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
 	}
-	else
-		temp = "Status code : " + version_code_message[1] + "/" + version_code_message[2];
-	body[0] = temp;
-   
-	// set body length
-	// int i = body[0].size();
-	// std::stringstream digit;
-	// digit << i;
-	// std::string numberString(digit.str());
-	// content_length[0] = numberString;
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -212,11 +193,12 @@ void	Response::make_response()
 	// this->response += content_length.name + ": " + content_length[0] + "\n";
 	// this->response += content_type.name + ": " + content_type[0] + "\n";
 	add_string_to_vector(server.name + ": " + server[0] + "\n");
-	add_string_to_vector(content_length.name + ": " + content_length[0] + "\n");
+	// add_string_to_vector(content_length.name + ": " + content_length[0] + "\n");
 	add_string_to_vector(content_type.name + ": " + content_type[0] + "\n");
 
 	// body
-	this->response += "\n" + body[0]; 
+	make_body();
+	// this->response += "\n" + body[0]; 
 } 
 
 const char	*Response::get_response()

@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/20 15:54:03 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/20 18:27:36 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <unistd.h>
+# include <dirent.h>
 
 class Response {
 	public:
@@ -52,8 +53,8 @@ class Response {
 		
 		void		make_body();						// generate the body according to the status
 		void		add_string_to_vector(std::string str);
-		void	read_html(std::string path);
-		void	read_png(std::string path);
+		void		read_file(std::string path);
+		int			directory_listing(std::string path);
 
 		
 		void	make_response();					// assemble response in http format
