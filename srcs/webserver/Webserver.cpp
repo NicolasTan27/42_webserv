@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 17:18:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/20 19:12:54 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/21 15:58:34 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 Webserver::Webserver(const char *path_to_config) : config(path_to_config)
 {
-	
+	config.printServers();
+	std::cout << "----- [CONFIG OK] -----" << std::endl;
 }
 
 int	Webserver::start()
