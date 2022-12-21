@@ -179,6 +179,8 @@ void	Response::make_body()
 				// std::cout << path << " is a file !" << std::endl;
 				// cgi ici
 				read_file(path);
+				// if php
+				
 			}
 			else
 			{
