@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/21 15:44:56 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/21 18:49:04 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "Context.hpp"
 # include "Status.hpp"
+# include "CgiHandler.hpp"
 
 # include <algorithm>
 # include <fstream>

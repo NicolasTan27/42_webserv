@@ -6,7 +6,7 @@
 #    By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/03 14:56:07 by ntan              #+#    #+#              #
-#    Updated: 2022/12/20 18:58:44 by ntan             ###   ########.fr        #
+#    Updated: 2022/12/21 18:57:15 by ntan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRCS			=	srcs/main.cpp\
 					srcs/response/Context.cpp\
 					srcs/response/Response.cpp\
 					srcs/response/Status.cpp\
+					srcs/response/CgiHandler.cpp\
 					srcs/webserver/Webserver.cpp\
 					srcs/webserver/SocketInfo.cpp
 

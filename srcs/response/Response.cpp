@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/21 18:08:21 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/21 19:03:11 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,9 +178,13 @@ void	Response::make_body()
 			{
 				// std::cout << path << " is a file !" << std::endl;
 				// cgi ici
-				read_file(path);
-				// if php
-				
+				if (context.request.path[0].find(".php"))
+				{
+					CgiHandler cgi(context);
+					std::cout << "cgi: " << cgi.executeCGI(path) << std::endl;
+				}
+				else
+					read_file(path);			
 			}
 			else
 			{

@@ -3,54 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   CgiHandler.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsung <rsung@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 15:56:33 by rsung             #+#    #+#             */
-/*   Updated: 2022/12/21 18:33:43 by rsung            ###   ########.fr       */
+/*   Updated: 2022/12/21 19:04:04 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "CgiHandler.hpp"
 
-CgiHandler::CgiHandler(void) {}
+// CgiHandler::CgiHandler(void) {}
 
-CgiHandler::CgiHandler(Context &context)
+CgiHandler::CgiHandler(Context &context) : context(context)
 {
 	_body = context.request.body[0];
-	this->initEnv(context);
+	this->_initEnv();
 }
 
-CgiHandler::CgiHandler(CgiHandler const &other)
-{
-	if (this != &other)
-	{
-		this->_body = other._body;
-		this->_env = other._env;
-	}
-	return ;
-}
+// CgiHandler::CgiHandler(CgiHandler const &other)
+// {
+// 	if (this != &other)
+// 	{
+// 		this->_body = other._body;
+// 		this->_env = other._env;
+// 	}
+// 	return ;
+// }
 
 CgiHandler::~CgiHandler(void) {}
 
-CgiHandler	&CgiHandler::operator=(CgiHandler const &other)
-{
-	if (this != &other)
-	{
-		this->_body = other._body;
-		this->_env = other._env;
-	}
-	return (*this);
-}
+// CgiHandler	&CgiHandler::operator=(CgiHandler const &other)
+// {
+// 	if (this != &other)
+// 	{
+// 		this->_body = other._body;
+// 		this->_env = other._env;
+// 	}
+// 	return (*this);
+// }
 
-void	CgiHandler::initEnv(Context &context)
+void	CgiHandler::_initEnv()
 {
 	this->_env["REDIRECT_STATUS"] = "200";
 	this->_env["GATEWAY_INTERFACE"] = "CGI/1.1";
 	this->_env["CONTENT_TYPE"] = "";
-	this->_env["CONTENT_LENGTH"] = this->_body.lenght();
+	this->_env["CONTENT_LENGTH"] = this->_body.length();
 	this->_env["HTTP_USER_AGENT"] = context.request.user_agent[0];
 	this->_env["PATH_INFO"] = context.request.path[0]; //path for CGI script
-	this->_env["PATH_TRANSLATED"] = context.config.location.root[0];
+	this->_env["PATH_TRANSLATED"] = context.location.root[0];
 	this->_env["QUERY_STRING"] = context.request.path[0];
 	this->_env["REMOTE_ADDR"] = context.request.host[1];
 	this->_env["REMOTE_HOST"] = "";
@@ -124,7 +124,7 @@ std::string	CgiHandler::executeCGI(const std::string  &scriptName)
 		dup2(fdIn, STDIN_FILENO);
 		dup2(fdOut, STDOUT_FILENO);
 		execve(scriptName.c_str(), nll, env);
-		std::cerr << "error: execve() failed." << std::endl;
+		std::cerr << "error: execve() failed. : " << scriptName << std::endl;
 		write(STDOUT_FILENO, "Status: 500\n", 12);
 	}
 	else
