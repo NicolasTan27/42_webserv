@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 17:15:52 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/20 14:30:27 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/21 15:02:49 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ Location::Location() :
 	// -> if no delimiter given, it will only consider a whole value
 	path("location", "/", "<"),
 	allowed_methods("allowed_methods", "GET,POST,DELETE", ","),
-	rewrite("rewrite", "", ""),
+	rewrite("rewrite", "", ","),
 	root("root", "./data", ""),
 	autoindex("autoindex", "off", ""),
 	cgi("cgi", "off", ""),

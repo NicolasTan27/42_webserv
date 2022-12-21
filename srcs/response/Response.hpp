@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/20 18:27:36 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/21 15:44:56 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ class Response {
 		int		check_allowed_methods();
 		int		check_version();
 		int		check_max_body_size();
-		int		check_file();    
+		int		check_file();
+		int		check_rewrite();  
+		int		check_access();
 		
 		void		make_body();						// generate the body according to the status
 		void		add_string_to_vector(std::string str);

@@ -23,6 +23,13 @@ Context::Context(Config conf, Request req) : config(conf), request(req)
 
 	this->location = Location();
 	find_location();
+	while (!this->location.rewrite.values.empty() 
+	&& this->request.path[0].find(this->location.rewrite[0]) != std::string::npos)
+	{
+		this->request.path[0].replace(this->request.path[0].find(this->location.rewrite[0]), this->location.rewrite[0].size(), this->location.rewrite[1]);
+		find_location();
+		this->location.rewrite.delimiter = "TRUE";
+	}
 	this->server.locations_count = 1;
 	this->server.locations[0] = this->location;
 }
@@ -147,6 +154,12 @@ void	Context::find_location()
 			return;
 		}
 	}
+
+	// if (this->request.path[0].find(this->location.rewrite[0]) != std::string::npos)
+	// {
+	// 	this->request.path[0].replace(this->request.path[0].find(this->location.rewrite[0]), this->location.rewrite[0].size(), this->location.rewrite[1]);
+	// 	find_location();
+	// }
 }
 
 /* ************************************************************************** */
