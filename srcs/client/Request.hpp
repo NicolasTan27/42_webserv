@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:58:39 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/09 18:09:08 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/21 18:34:00 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class Request {
 		Keys	version; 	// protocol/version for this request
 		Keys	host;		// ip and port for virtual server
 		Keys	body;		// content sended with the request, commonly used with POST
+		Keys	user_agent; 
 };
 
 #endif

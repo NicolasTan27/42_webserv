@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/21 18:02:56 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/21 18:08:21 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,10 +192,13 @@ void	Response::make_body()
 			add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
 	}
 	// POST
-	// if (context.request.method[0] == "POST")
-	// {
-		
-	// }
+	if (context.request.method[0] == "POST")
+	{
+		if (context.request.path[0] == "/static_form.html")
+		{
+			
+		}
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////

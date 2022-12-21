@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 14:04:34 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/16 17:38:11 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/21 18:35:42 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ Request::Request(std::string request) : request(request),
 	path("path", "/", ""),
 	version("version", "HTTP", ""),
 	host("host", "127.0.0.1:8000", ":"),
-	body("body", "", "")
+	body("body", "", ""),
+	user_agent("user_agent", "", "")
 {
 	parse_request();
 }
@@ -82,6 +83,10 @@ void	Request::parse_request_forest(std::string name, std::string value)
 		if (host.values.size() < 2 || host.values[1].empty())
 			host.values.push_back("8000"); // Defaut port if not given in the request
 	}
+	if (name == "User-Agent")
+	{
+		user_agent.setValue(value);
+	}
 }
 
 /* ************************************************************************** */
@@ -101,4 +106,5 @@ void	Request::print_request()
 	// }
 	host.print();
 	body.print();
+	user_agent.print();
 }
