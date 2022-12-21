@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 17:15:52 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/20 14:30:27 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/20 22:35:23 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ Location::Location() :
 	root("root", "./data", ""),
 	autoindex("autoindex", "off", ""),
 	cgi("cgi", "off", ""),
-	default_dir_request("default_dir_request", "dir_file", ""),
+	default_dir_request("default_dir_request", "./data/static/autoindex.html", ""),
 	upload_dir("upload_dir", "./data/upload", "")
 	// index("index", "index", "")
 {}

@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/20 18:51:56 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/20 22:37:46 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,10 @@ void	Response::make_body()
 			if( s.st_mode & S_IFDIR )
 			{
 				// std::cout << path << " is a directory !" << std::endl;
-				directory_listing(path);
+				if (context.location.autoindex[0] == "on")
+					directory_listing(path);
+				else
+					read_file(context.location.default_dir_request[0]);
 			}
 			else if( s.st_mode & S_IFREG )
 			{
