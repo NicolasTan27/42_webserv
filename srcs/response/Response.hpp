@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/21 18:49:04 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/22 17:21:08 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <sys/stat.h>
 # include <unistd.h>
 # include <dirent.h>
+# include <cstdio>
 
 class Response {
 	public:

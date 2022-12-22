@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/22 15:58:44 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/22 17:21:40 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,16 +162,15 @@ int	Response::directory_listing(std::string path)
 void	Response::make_body()
 {
 	add_string_to_vector("\n");
+	std::string path = context.location.root[0] + context.request.path[0];
+	struct stat s;
 	// GET
 	if (context.request.method[0] == "GET")
 	{
-		struct stat s;
-		std::string path = context.location.root[0] + context.request.path[0];
 		if( stat(path.c_str(),&s) == 0 && (version_code_message[1][0] != '4' || version_code_message[1][0] != '5'))
 		{
 			if( s.st_mode & S_IFDIR ) // If is a directory
 			{
-				// std::cout << path << " is a directory !" << std::endl;
 				if (context.location.autoindex[0] == "on")
 					directory_listing(path);
 				else
@@ -200,9 +199,7 @@ void	Response::make_body()
 	// POST
 	if (context.request.method[0] == "POST")
 	{
-		struct stat s;
-		std::string path = context.location.root[0] + context.request.path[0];
-		if( stat(path.c_str(),&s) == 0 )
+		if( stat(path.c_str(),&s) == 0 && (version_code_message[1][0] != '4' || version_code_message[1][0] != '5') )
 		{
 			if (context.request.path[0].find(".php") != std::string::npos)
 			{
@@ -218,7 +215,18 @@ void	Response::make_body()
 	// DELETE
 	else if (context.request.method[0] == "DELETE")
 	{
-
+		if( stat(path.c_str(),&s) == 0 && (version_code_message[1][0] != '4' || version_code_message[1][0] != '5') )
+		{
+			if (context.request.path[0].find(".php") != std::string::npos)
+			{
+				CgiHandler cgi(context);
+				add_string_to_vector(cgi.executeCGI(path));
+			}
+			else if (remove(path.c_str()))
+				add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
+		}
+		else
+			add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
 	}
 }
 
