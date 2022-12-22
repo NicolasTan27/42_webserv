@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 15:56:33 by rsung             #+#    #+#             */
-/*   Updated: 2022/12/22 01:05:09 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/22 20:38:56 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 
 CgiHandler::CgiHandler(Context &context) : context(context)
 {
-	_body = context.request.body[0];
+	if (context.request.body.values.size() >= 3 && !context.request.body[2].empty())
+		_body = context.request.body[2];
+	else
+		_body = std::string();
 	this->_initEnv();
 }
 
@@ -63,6 +66,7 @@ void	CgiHandler::_initEnv()
 	this->_env["SERVER_PORT"] = context.request.host[1]; // port 8000
 	this->_env["SERVER_PROTOCOL"] = "HTTP/1.1";
 	this->_env["SERVER_SOFTWARE"] = "42webserv/1.0";
+	this->_env["BODY"] = _body;
 }
 
 char	**CgiHandler::getEnv() const

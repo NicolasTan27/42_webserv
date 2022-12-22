@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/22 17:21:40 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/22 18:22:34 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,8 +180,16 @@ void	Response::make_body()
 			{
 				if (context.request.path[0].find(".php") != std::string::npos)
 				{
-					CgiHandler cgi(context);
-					add_string_to_vector(cgi.executeCGI(path));
+					if (context.location.cgi[0] == "on")
+					{
+						CgiHandler cgi(context);
+						add_string_to_vector(cgi.executeCGI(path));
+					}
+					else
+					{
+						set_status("403");
+						add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
+					}
 				}
 				else
 					read_file(path);			
@@ -203,10 +211,25 @@ void	Response::make_body()
 		{
 			if (context.request.path[0].find(".php") != std::string::npos)
 			{
-				CgiHandler cgi(context);
-				add_string_to_vector(cgi.executeCGI(path));
+				if (context.location.cgi[0] == "on")
+				{
+					CgiHandler cgi(context);
+					add_string_to_vector(cgi.executeCGI(path));
+				}
+				else
+				{
+					set_status("403");
+					add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
+				}
 			}
-			read_file(path);	
+			else
+			{
+				std::cout << "\n----- POST RECEIVED -----" << std::endl;
+				std::cout << "----- WHAT AM I SUPPOSED TO DO WITH THAT ? -----" << std::endl;
+				for (std::vector<std::string>::iterator it = context.request.body.values.begin(); it != context.request.body.values.end(); it++)
+					std::cout << *it << std::endl;
+			}
+				
 		}
 		else
 			add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
@@ -219,8 +242,16 @@ void	Response::make_body()
 		{
 			if (context.request.path[0].find(".php") != std::string::npos)
 			{
-				CgiHandler cgi(context);
-				add_string_to_vector(cgi.executeCGI(path));
+				if (context.location.cgi[0] == "on")
+				{
+					CgiHandler cgi(context);
+					add_string_to_vector(cgi.executeCGI(path));
+				}
+				else
+				{
+					set_status("403");
+					add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
+				}
 			}
 			else if (remove(path.c_str()))
 				add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
