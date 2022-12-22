@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sojung <sojung@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/22 15:51:03 by sojung           ###   ########.fr       */
+/*   Updated: 2022/12/22 15:58:44 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,24 +196,25 @@ void	Response::make_body()
 		else
 			add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
 	}
+	
 	// POST
 	if (context.request.method[0] == "POST")
 	{
-		if (context.request.path[0] == "/static_form.html")
-		{
-			
-		}
 		struct stat s;
 		std::string path = context.location.root[0] + context.request.path[0];
 		if( stat(path.c_str(),&s) == 0 )
 		{
-			// std::cout << path << " is a file !" << std::endl;
-			// cgi ici
+			if (context.request.path[0].find(".php") != std::string::npos)
+			{
+				CgiHandler cgi(context);
+				add_string_to_vector(cgi.executeCGI(path));
+			}
 			read_file(path);	
 		}
-		if (version_code_message[1] != "200")
+		else
 			add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
 	}
+	
 	// DELETE
 	else if (context.request.method[0] == "DELETE")
 	{
