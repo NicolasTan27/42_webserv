@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "SocketInfo.hpp"
+#include "UserData.hpp"
 
 SocketInfo::SocketInfo(Config conf) : server_fd(-1), on(1), config(conf)
 {
@@ -127,6 +128,7 @@ void	SocketInfo::server_loop()
 {
 	int	ret, desc_ready, new_fd, close_connec, i;
 
+	UserData	data;
 	ret = -1;
 	desc_ready = 0;
 	do
@@ -207,6 +209,10 @@ void	SocketInfo::server_loop()
 						Response	response(context);
 						response.print_response();
 						;
+						if (context.request.method[0] == "POST")
+							data.addUser(request.body[2]);
+						else if(context.request.method[0] == "DELETE")
+							data.deleteUser(request.body[2]);
 						std::vector<unsigned char> vector_response = response.get_vector();
 			// 			write(fds[i].fd, vector_response.data(), vector_response.size());
 			// 			write(1, vector_response.data(), vector_response.size());

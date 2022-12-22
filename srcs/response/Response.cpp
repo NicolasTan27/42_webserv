@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sojung <sojung@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/22 01:06:07 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/22 15:35:55 by sojung           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,21 @@ void	Response::make_body()
 		{
 			
 		}
+		struct stat s;
+		std::string path = context.location.root[0] + context.request.path[0];
+		if( stat(path.c_str(),&s) == 0 )
+		{
+			// std::cout << path << " is a file !" << std::endl;
+			// cgi ici
+			read_file(path);	
+		}
+		if (version_code_message[1] != "200")
+			add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
+	}
+	// DELETE
+	else if (context.request.method[0] == "DELETE")
+	{
+
 	}
 }
 
