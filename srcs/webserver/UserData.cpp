@@ -6,11 +6,13 @@
 /*   By: sojung <sojung@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 18:32:55 by sojung            #+#    #+#             */
-/*   Updated: 2022/12/21 19:09:55 by sojung           ###   ########.fr       */
+/*   Updated: 2022/12/22 16:55:39 by sojung           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "UserData.hpp"
+#include <fstream>
+#include <iostream>
 
 UserData::UserData() : user_data(std::map<std::string, std::string>()) {}
 
@@ -59,6 +61,7 @@ void UserData::addUser(std::string &request) {
     if (it != this->user_data.end())
         this->user_data.erase(it);
     this->user_data.insert(elem);
+    updateFile();
 }
 
 void UserData::deleteUser(std::string &request) {
@@ -68,4 +71,19 @@ void UserData::deleteUser(std::string &request) {
     it = this->user_data.find(elem.first);
     if (it != this->user_data.end())
         this->user_data.erase(it);
+    updateFile();
+}
+
+void UserData::updateFile(void) {
+    std::fstream file(".file");
+    if (file.is_open()) {
+        std::map<std::string, std::string>::iterator it_beg, it_end;
+        it_beg = this->user_data.begin();
+        it_end = this->user_data.end();
+        while (it_beg != it_end) {
+            file << "User name : " << it_beg->first << "\tFavorite color : " << it_beg->second << std::endl;
+            it_beg++;
+        }
+        file.close();
+    }
 }

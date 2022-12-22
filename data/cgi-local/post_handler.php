@@ -1,11 +1,14 @@
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Sign up OK</title>
-    </head>
-    
-    <body>
-        Hello <?php echo $_POST["username"]; ?><br>
-        Your favorite color is : <?php echo $_POST["favcolor"]; ?> <button style="color: <?php echo $_POST["favcolor"]; ?>"> </button><br>
-    </body>
-</html>
+#!/usr/bin/php
+<?php
+
+    $fileContent = file_get_contents('/mnt/nfs/homes/sojung/Documents/projets/42_webserv/srcs/webserver/.file');
+
+    print "<html>\n";
+    print "<head>\n";
+    print "<title>User info POST ok</title>\n";
+    print "</head>\n";
+    print "<body>\n";
+    print $fileContent;
+
+
+?>
