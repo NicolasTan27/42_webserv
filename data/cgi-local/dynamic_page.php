@@ -11,7 +11,9 @@
 	print "</html>\n";
 
 ?>
-	<head>
+
+	
+	<!-- <head>
 	</head>
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -50,4 +52,4 @@
 		    </div>
 		  </div>
 		</nav>
-	</body>
+	</body> -->
