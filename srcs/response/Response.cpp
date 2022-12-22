@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/22 01:06:07 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/22 15:42:15 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ void	Response::make_body()
 		std::string path = context.location.root[0] + context.request.path[0];
 		if( stat(path.c_str(),&s) == 0 && (version_code_message[1][0] != '4' || version_code_message[1][0] != '5'))
 		{
-			if( s.st_mode & S_IFDIR )
+			if( s.st_mode & S_IFDIR ) // If is a directory
 			{
 				// std::cout << path << " is a directory !" << std::endl;
 				if (context.location.autoindex[0] == "on")
@@ -177,11 +177,9 @@ void	Response::make_body()
 				else
 					read_file(context.location.default_dir_request[0]);
 			}
-			else if( s.st_mode & S_IFREG )
+			else if( s.st_mode & S_IFREG ) // If is a regular file
 			{
-				// std::cout << path << " is a file !" << std::endl;
-				// cgi ici
-				if (context.request.path[0].find(".php"))
+				if (context.request.path[0].find(".php") != std::string::npos)
 				{
 					CgiHandler cgi(context);
 					add_string_to_vector(cgi.executeCGI(path));
