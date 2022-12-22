@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/21 22:32:33 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/22 01:06:07 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ void	Response::make_body()
 				if (context.request.path[0].find(".php"))
 				{
 					CgiHandler cgi(context);
-					std::cout << "cgi: " << cgi.executeCGI(path) << std::endl;
+					add_string_to_vector(cgi.executeCGI(path));
 				}
 				else
 					read_file(path);			

@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 15:56:33 by rsung             #+#    #+#             */
-/*   Updated: 2022/12/21 19:04:04 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/22 01:05:09 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,11 +119,17 @@ std::string	CgiHandler::executeCGI(const std::string  &scriptName)
 	}
 	else if (!pid)
 	{
-		char * const * nll = NULL;
+		// char * const * nll = NULL;
 
 		dup2(fdIn, STDIN_FILENO);
 		dup2(fdOut, STDOUT_FILENO);
-		execve(scriptName.c_str(), nll, env);
+		
+		// execve(scriptName.c_str(), nll, env);
+		char *path = (char*) scriptName.c_str();
+		char *prog = (char*) "/bin/php";
+		char *argv[3] = {prog, path, NULL};
+		execve(prog, argv, env);
+
 		std::cerr << "error: execve() failed. : " << scriptName << std::endl;
 		write(STDOUT_FILENO, "Status: 500\n", 12);
 	}
