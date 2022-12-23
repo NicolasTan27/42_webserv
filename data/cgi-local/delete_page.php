@@ -19,11 +19,10 @@ parse_str($entityBody, $BODY);
 <body>
 <h1>File Destroyer</h1>
 
-<form action="/delete.php">
+<form action="delete.php" method="post">
  	<label for="files">Select a file to delete:</label>
   	<select name="files" if ="files">
   		<option value="">Select a file</option>
-	
 		<?php
 			$dir = scandir($wdir);
 			foreach ($dir as $doc)
@@ -31,7 +30,7 @@ parse_str($entityBody, $BODY);
 				if ($doc != '.' && $doc != '..')
 				{
 					$op = fopen($savedir . $doc, 'r');
-					echo '<option value="' . $doc . ''. '</h1>';
+					echo '<option value="' . $doc . '">'. $doc .'</h1>';
 				}
 			}
 		?>
