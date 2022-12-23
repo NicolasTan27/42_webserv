@@ -7,7 +7,7 @@ parse_str($entityBody, $BODY);
 <?php
 	$wdir = '/mnt/nfs/homes/ntan/Desktop/42_webserv/data/cgi-local/';
 	$filename =  $wdir . 'saved_files/' . $BODY['filename'];
-	if ($_ENV['REQUEST_METHOD'] == 'POST')
+	if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
 		$file = fopen($filename, "w") or die ("Unable to open file");
 		fwrite($file, $BODY['content']);
