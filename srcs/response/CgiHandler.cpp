@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 15:56:33 by rsung             #+#    #+#             */
-/*   Updated: 2022/12/22 20:38:56 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/23 14:51:47 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,14 +105,16 @@ std::string	CgiHandler::executeCGI(const std::string  &scriptName)
 	tmpStdin = dup(STDIN_FILENO);
 	tmpStdout = dup(STDOUT_FILENO);
 
-	FILE	*fIn = tmpfile();
-	FILE	*fOut = tmpfile();
+	FILE	*fIn = std::tmpfile();
+	FILE	*fOut = std::tmpfile();
 	long	fdIn = fileno(fIn);
 	long	fdOut = fileno(fOut);
 	int		ret = 1;
 
-	write(fdIn, _body.c_str(), _body.size());
-	lseek(fdIn, 0, SEEK_SET);
+	std::fputs(_body.c_str(), fIn);
+	std::rewind(fIn);
+	// write(fdIn, _body.c_str(), _body.size());
+	// lseek(fdIn, 0, SEEK_SET);
 
 	pid = fork();
 

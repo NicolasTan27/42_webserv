@@ -1,12 +1,30 @@
-<html>
-<body>
-
 <?php
-print_r($_ENV["BODY"]);
+$entityBody = stream_get_contents(STDIN);
+// echo "Body = ", $entityBody, "\n";
+parse_str($entityBody, $BODY);
 ?>
 
-Welcome <?php echo $_POST["name"]; ?><br>
-Your email address is: <?php echo $_POST["email"]; ?>
+<?php
+	$wdir = '/mnt/nfs/homes/ntan/Desktop/42_webserv/data/cgi-local/';
+	$filename =  $wdir . 'saved_files/' . $BODY['filename'] . '.txt';
+	$file = fopen($filename, "w") or die ("Unable to open file");
+	fwrite($file, $BODY['content']);
+?>
 
-</body>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Form 42 Webserv</title>
+</head>
+
+	<body>
+		<?php
+			$dir = scandir($wdir . '/saved_files');
+			
+			print_r($dir);
+		?>
+	</body>
+
 </html>
