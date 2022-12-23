@@ -11,7 +11,6 @@
 	Filename: <input type="text" name="filename"><br>
 	Content: <input type="text" name="content"><br>
 	<input type="submit">
-</form>
-
+	</form>
 </body>
 </html> 
