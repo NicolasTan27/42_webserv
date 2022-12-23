@@ -1,0 +1,39 @@
+h1{
+	font-family: helvetica;
+	font-style: italic;
+	font-size: 3em;
+	text-align: center;
+	/*background-color: #FF7400;*/
+	background: linear-gradient(90deg, #FF7400, #D8D800);
+}
+.Filename{
+	font-size: 1.5em;
+	font-weight: 800;
+	text-decoration: underline;
+	/*text-align: center;*/
+	margin-left: auto;
+	margin-right: auto;
+	width: 6em;
+	text-indent: 0;
+}
+.Content{
+	font-size: 1.5em;
+	font-weight: 800;
+	text-decoration: underline;
+	/*text-align: center;*/
+	margin-left: auto;
+	margin-right: auto;
+	width: 6em;
+	text-indent: 0;
+	/*border-top: 3px #EB5353 dotted;
+    border-right: 3px #F9D923 double;
+    border-bottom: 3px #36AE7C dashed;
+    border-left: 3px #187498 solid;*/
+}
+.Submit{
+	text-align: center;
+}
+.Banner{
+	padding: 6.5em;
+	background-image: url('ok.gif');
+}

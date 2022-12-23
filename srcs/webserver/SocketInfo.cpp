@@ -6,7 +6,7 @@
 /*   By: rsung <rsung@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 10:13:45 by rsung             #+#    #+#             */
-/*   Updated: 2022/12/20 16:16:02 by rsung            ###   ########.fr       */
+/*   Updated: 2022/12/23 15:29:03 by rsung            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,6 @@ void	SocketInfo::server_loop()
 						
 						Response	response(context);
 						response.print_response();
-						;
 						// if (context.request.method[0] == "POST")
 						// 	data.addUser(request.body[2]);
 						// else if(context.request.method[0] == "DELETE")
