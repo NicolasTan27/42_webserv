@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: soyoungjung <soyoungjung@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 14:57:05 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/20 19:01:31 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/26 00:20:06 by soyoungjung      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "config/Config.hpp"
-# include "client/Request.hpp"
-# include "webserver/Webserver.hpp"
+#include "config/Config.hpp"
+#include "client/Request.hpp"
+#include "webserver/Webserver.hpp"
 
 #include <unistd.h>
 #include <cstring>
@@ -24,15 +24,39 @@
 
 // #define PORT 8000
 
-int main()
+int main(int argc, char *argv[])
 {
-	char	path[] = "./config_files/default.conf";
+	std::string path;
+
+	if (argc > 2)
+	{
+		std::cerr << "one configuration file needed" << std::endl;
+		return (1);
+	}
+	else if (argc == 2)
+	{
+		path = argv[1];
+		struct stat s;
+
+		if (path.find_last_of(".") == std::string::npos || path.substr(path.find_last_of("."), path.size()) != ".conf" || path.size() <= 5)
+		{
+			std::cerr << ".conf file name error" << std::endl;
+			return (1);
+		}
+		if (stat(path.c_str(), &s) == -1 || !(s.st_mode & S_IFREG))
+		{
+			std::cout << "please check the configuration file" << std::endl;
+			return (1);
+		}
+	}
+	else
+		path = "./config_files/default.conf";
 	try
 	{
-		Webserver webserver(path);
-		webserver.start();			
+		Webserver webserver(path.c_str());
+		webserver.start();
 	}
-	catch (std::exception& e)
+	catch (std::exception &e)
 	{
 		std::cerr << e.what() << std::endl;
 		return (1);
