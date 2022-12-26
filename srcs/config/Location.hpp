@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 17:15:49 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/20 14:30:22 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/26 17:54:16 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ class Location {
 		Keys	root;					//	directory or file where the file should be searched from
 		Keys	autoindex;				//	define if directory listing in enabled
 		Keys	cgi;					// 
-		Keys	default_dir_request;	//	default file if the request is a directory
+		Keys	index;	//	default file if the request is a directory
 		Keys	upload_dir;				// 	allow this location to accept upload and define a directory to store them
 		// Keys	index;
 };

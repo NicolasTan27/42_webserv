@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 17:15:52 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/22 17:40:15 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/26 17:54:43 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ Location::Location() :
 	allowed_methods("allowed_methods", "GET", ","),
 	rewrite("rewrite", "", ","),
 	root("root", "./data", ""),
-	autoindex("autoindex", "off", ""),
+	autoindex("autoindex", "on", ""),
 	cgi("cgi", "off", ""),
-	default_dir_request("default_dir_request", "./data/static/autoindex.html", ""),
+	index("index", "", ""),
 	upload_dir("upload_dir", "./data/upload", "")
 	// index("index", "index", "")
 {}
@@ -41,7 +41,7 @@ void	Location::print_location()
 	std::cout << "\t";
 	cgi.print();
 	std::cout << "\t";
-	default_dir_request.print();
+	index.print();
 	std::cout << "\t";
 	upload_dir.print();
 	// std::cout << "\t";

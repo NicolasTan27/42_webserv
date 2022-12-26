@@ -6,10 +6,10 @@ parse_str($entityBody, $BODY);
 ?>
 
 <?php
-	$wdir = '/mnt/nfs/homes/ntan/Desktop/42_webserv/data/cgi-local/';
-	$filename =  $wdir . 'saved_files/' . $BODY['filename'];
+	$wdir = '/mnt/nfs/homes/ntan/Desktop/42_webserv/data/cgi/php/';
 	if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
+		$filename =  $wdir . 'saved_files/' . $BODY['filename'];
 		$file = fopen($filename, "w") or die ("Unable to open file");
 		fwrite($file, $BODY['content']);
 	}
@@ -23,20 +23,21 @@ parse_str($entityBody, $BODY);
 	<title>Form 42 Webserv</title>
 </head>
 
-	<body>
-		<?php
-			$savedir = $wdir . 'saved_files/';
-			$dir = scandir($savedir);
-			foreach ($dir as $doc)
+<body>
+<div> <a href="main.php">Main</a> <a href="post.php">Post</a> <a href="delete.php">Delete</a> </div>
+	<?php
+		$savedir = $wdir . 'saved_files/';
+		$dir = scandir($savedir);
+		foreach ($dir as $doc)
+		{
+			if ($doc != '.' && $doc != '..')
 			{
-				if ($doc != '.' && $doc != '..')
-				{
-					$op = fopen($savedir . $doc, 'r');
-					echo '<h1>' . $doc . '</h1>';
-					echo '<div>' . fread($op, filesize($savedir . $doc)) . '</div>';
-				}
+				$op = fopen($savedir . $doc, 'r');
+				echo '<h1>' . $doc . '</h1>';
+				echo '<div>' . fread($op, filesize($savedir . $doc)) . '</div>';
 			}
-		?>
-	</body>
+		}
+	?>
+</body>
 
 </html>

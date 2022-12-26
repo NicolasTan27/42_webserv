@@ -22988,7 +22988,7 @@ class Location {
   Keys root;
   Keys autoindex;
   Keys cgi;
-  Keys default_dir_request;
+  Keys index;
   Keys upload_dir;
   Keys index;
 };

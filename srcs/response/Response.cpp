@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/26 15:14:49 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/26 18:43:52 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ int		Response::check_allowed_methods()
 	iterator	beg = context.location.allowed_methods.values.begin();
 	iterator	end = context.location.allowed_methods.values.end();
 	std::string	find = context.request.method[0];
+	if (find != "GET" && find != "POST" && find != "DELETE")
+		return (1);
 	if (std::find(beg, end, find) == end)
 		return (1);
 	return (0);
@@ -139,23 +141,37 @@ void	Response::read_file(std::string path)
 
 int	Response::directory_listing(std::string path)
 {
-	DIR *dir; struct dirent *diread;
-    std::vector<char *> files;
+	// DIR *dir; struct dirent *diread;
+    // std::vector<char *> files;
 
-    if ((dir = opendir(path.c_str())) != NULL) {
-        while ((diread = readdir(dir)) != NULL) {
-            files.push_back(diread->d_name);
-        }
-        closedir(dir);
-    } else {
-        std::cerr << "opendir failed" << std::endl;
-        return (1);
-    }
+    // if ((dir = opendir(path.c_str())) != NULL) {
+    //     while ((diread = readdir(dir)) != NULL) {
+    //         files.push_back(diread->d_name);
+    //     }
+    //     closedir(dir);
+    // } else {
+    //     std::cerr << "opendir failed" << std::endl;
+    //     return (1);
+    // }
+	
+	// // std::cout << diread->d_name << std::endl;
 
-	for (std::vector<char *>::iterator it = files.begin(); it != files.end(); it++)
+	// for (std::vector<char *>::iterator it = files.begin(); it != files.end(); it++)
+	// {
+	// 	add_string_to_vector("<a href=\"./" + std::string(*it) + "\">" + std::string(*it) + "</a>\n");
+	// }
+	
+	(void)path;
+	CgiHandler cgi(context);
+	std::string cgi_response = cgi.executeCGI("./data/cgi/php/directory_listing.php");
+	if (cgi_response.empty())
 	{
-		add_string_to_vector("<a href=\"./" + std::string(*it) + "\">" + std::string(*it) + "</a>\n");
+		set_status("500");
+		get_error_page();
 	}
+	else
+		add_string_to_vector(cgi_response);
+	
 	return (0);
 }
 
@@ -178,10 +194,10 @@ void	Response::get_error_page()
 	}
 }
 
-void	Response::make_body()
+void	Response::make_body(std::string path)
 {
 	add_string_to_vector("\n");
-	std::string path = context.location.root[0] + context.request.path[0];
+	// std::string path = context.location.root[0] + context.request.path[0];
 	struct stat s;
 	// GET
 	if (context.request.method[0] == "GET")
@@ -190,10 +206,19 @@ void	Response::make_body()
 		{
 			if( s.st_mode & S_IFDIR ) // If is a directory
 			{
-				if (context.location.autoindex[0] == "on")
+				if (!context.location.index[0].empty())
+				{
+					std::string new_path = path + "/" + context.location.index[0];
+					if (stat(new_path.c_str(), &s) == 0 && s.st_mode & S_IFREG)
+						make_body(new_path);
+					else
+					{
+						set_status("404");
+						get_error_page();
+					}		
+				}
+				else if (context.location.autoindex[0] == "on")
 					directory_listing(path);
-				else
-					read_file(context.location.default_dir_request[0]);
 			}
 			else if( s.st_mode & S_IFREG ) // If is a regular file
 			{
@@ -227,7 +252,9 @@ void	Response::make_body()
 			}
 		}
 		else
+		{
 			get_error_page();
+		}
 	}
 	
 	// POST
@@ -321,7 +348,7 @@ void	Response::make_response()
 	add_string_to_vector(content_type.name + ": " + content_type[0] + "\n");
 
 	// body
-	make_body();
+	make_body(context.location.root[0] + context.request.path[0]);
 } 
 
 const char	*Response::get_response()

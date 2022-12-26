@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:47:35 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/26 15:09:55 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/26 17:52:39 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ void	Server::parse_lines_forest(std::string name, std::string value)
 		currentLocation().autoindex.setValue(value);
 	else if (name == "cgi")
 		currentLocation().cgi.setValue(value);
-	else if (name == "default_dir_request")
-		currentLocation().default_dir_request.setValue(value);
+	else if (name == "index")
+		currentLocation().index.setValue(value);
 	else if (name == "upload_dir")
 		currentLocation().upload_dir.setValue(value);
 	// else if (name == "index")

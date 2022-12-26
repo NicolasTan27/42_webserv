@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/26 14:54:43 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/26 18:25:42 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ class Response {
 		int		check_rewrite();  
 		int		check_access();
 		
-		void		make_body();						// generate the body according to the status
+		void		make_body(std::string path);						// generate the body according to the status
 		void		add_string_to_vector(std::string str);
 		void		read_file(std::string path);
 		int			directory_listing(std::string path);

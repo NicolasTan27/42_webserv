@@ -6,7 +6,11 @@ parse_str($entityBody, $BODY);
 ?>
 
 <?php
-	$wdir = '/mnt/nfs/homes/ntan/Desktop/42_webserv/data/cgi-local/saved_files/';
+	$wdir = '/mnt/nfs/homes/ntan/Desktop/42_webserv/data/cgi/php/saved_files/';
+	if ($_SERVER['REQUEST_METHOD'] == 'POST' && $BODY['file'] != '')
+	{
+		unlink($wdir . $BODY['file']);
+	}
 ?>
 
 <!DOCTYPE html>
@@ -18,11 +22,12 @@ parse_str($entityBody, $BODY);
 </head>
 
 <body>
+<div> <a href="main.php">Main</a> <a href="post.php">Post</a> <a href="delete.php">Delete</a> </div>
 <h1>File Destroyer</h1>
 
 <form action="delete.php" method="post">
- 	<label for="files">Select a file to delete:</label>
-  	<select name="files" if ="files">
+ 	<label for="file">Select a file to delete:</label>
+  	<select name="file" if ="file">
   		<option value="">Select a file</option>
 		<?php
 			$dir = scandir($wdir);
