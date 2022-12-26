@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:47:35 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/21 16:07:31 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/26 15:09:55 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ Server::Server(std::string text) :	textfile(text), locations_count(0),
 	listen("listen", "0.0.0.0:8000", ":"),
 	server_name("server_name", "", ""),
 	client_max_body_size("client_max_body_size", "100", ""),
-	error_page("error_page", "404,errors_pages/error404.html", ",")							
+	error_page("error_page", "404,./data/error_pages/404.html", ",")							
 {
 	locations[0] = Location();
 	parse_lines();

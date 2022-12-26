@@ -1,10 +1,11 @@
+#!/usr/bin/php
 <!DOCTYPE html>
 <html lang="en">
 	
 <head>
 	<meta charset="UTF-8">
 	<title>Form 42 Webserv</title>
-	<link href="nicolas.css" rel="stylesheet">
+	<link href="css/main.css" rel="stylesheet">
 </head>
 
 <body>

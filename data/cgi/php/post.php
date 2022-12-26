@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 $entityBody = stream_get_contents(STDIN);
 // echo "Body = ", $entityBody, "\n";

@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 $entityBody = stream_get_contents(STDIN);
 // echo "Body = ", $entityBody, "\n";
@@ -29,7 +30,7 @@ parse_str($entityBody, $BODY);
 			{
 				if ($doc != '.' && $doc != '..')
 				{
-					$op = fopen($savedir . $doc, 'r');
+					$op = fopen($wdir . $doc, 'r');
 					echo '<option value="' . $doc . '">'. $doc .'</h1>';
 				}
 			}

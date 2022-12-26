@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:41:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/12 15:49:36 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/26 15:54:54 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 
 # define MAX_SERV 10
 # define MAX_LOCATIONS 10
+# define CGI ".php"
+# define CGI_PATH "/bin/php"
 
 class Config
 {

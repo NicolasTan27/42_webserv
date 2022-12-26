@@ -50,7 +50,10 @@ void	Context::find_server()
 		if ((this->config.servers[i].listen[0] == "127.0.0.1" 
 				|| this->config.servers[i].listen[0] == "localhost")
 				&& this->config.servers[i].listen[1] == this->request.host[1])
+		{
 			this->servers.push_back(this->config.servers[i]);
+			std::cout << "test" << std::endl;
+		}
 	}
 
 	// Consider server witout ip or with default ip 0.0.0.0 if no server found
@@ -134,7 +137,10 @@ void	Context::find_location()
 				if (*beg == *rbeg)
 					res++;
 				else
+				{
+					res = 0;
 					break;
+				}
 			}
 			match_count.push_back(res);
 		}

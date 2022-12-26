@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 15:56:33 by rsung             #+#    #+#             */
-/*   Updated: 2022/12/23 14:51:47 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/26 14:19:54 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,17 @@ char	**CgiHandler::getEnv() const
 	return (env);
 }
 
+// char	*get_prog_type(char *path)
+// {
+// 	std::fstream	fs(path, std::fstream::in);
+// 	if (!(fs.is_open()))
+// 		std::cerr << "ERROR: Could not read file at " << path << std::endl;
+// 	std::string line;
+// 	getline(fs, line);
+	
+// 	return (line.c_str());
+// }
+
 std::string	CgiHandler::executeCGI(const std::string  &scriptName)
 {
 	pid_t		pid;
@@ -92,6 +103,7 @@ std::string	CgiHandler::executeCGI(const std::string  &scriptName)
 	int			tmpStdout;
 	char		**env;
 	std::string	newBody;
+	int			exit_status = 0;
 
 	try
 	{
@@ -121,7 +133,8 @@ std::string	CgiHandler::executeCGI(const std::string  &scriptName)
 	if (pid == -1)
 	{
 		std::cerr << "error: fork() failed." << std::endl;
-		return ("Status: 500\n");
+		return (std::string());
+		// return ("Status: 500\n");
 	}
 	else if (!pid)
 	{
@@ -132,12 +145,13 @@ std::string	CgiHandler::executeCGI(const std::string  &scriptName)
 		
 		// execve(scriptName.c_str(), nll, env);
 		char *path = (char*) scriptName.c_str();
-		char *prog = (char*) "/bin/php";
+		char *prog = (char*) CGI_PATH;
 		char *argv[3] = {prog, path, NULL};
 		execve(prog, argv, env);
 
 		std::cerr << "error: execve() failed. : " << scriptName << std::endl;
-		write(STDOUT_FILENO, "Status: 500\n", 12);
+		exit_status = 1;
+		// write(STDOUT_FILENO, "Status: 500\n", 12);
 	}
 	else
 	{
@@ -171,5 +185,7 @@ std::string	CgiHandler::executeCGI(const std::string  &scriptName)
 	if (!pid)
 		exit(0);
 
+	if (exit_status)
+		return (std::string());
 	return (newBody);
 }

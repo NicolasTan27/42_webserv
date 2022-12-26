@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/22 18:22:34 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/26 15:14:49 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,25 @@ int	Response::directory_listing(std::string path)
 	return (0);
 }
 
+void	Response::get_error_page()
+{
+	std::vector<std::string>::iterator beg = context.server.error_page.values.begin();
+	std::vector<std::string>::iterator end = context.server.error_page.values.end();
+	std::vector<std::string>::iterator pos = std::find(beg, end, version_code_message[1]);
+	// struct stat s;
+	if (pos != end && pos + 1 != end)
+	{
+		// std::cout << "AAAAAAAAAAAAAAA " << (*(pos + 1)).c_str() << std::endl;
+		// if (access((*(pos + 1)).c_str(), R_OK) < 0 && stat((*(pos + 1)).c_str(),&s) && s.st_mode & S_IFREG)
+			read_file((*(pos + 1)).c_str());
+	}
+	else
+	{
+		std::cerr << "Could not read error page given in config file." << std::endl;
+		add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
+	}
+}
+
 void	Response::make_body()
 {
 	add_string_to_vector("\n");
@@ -167,7 +186,7 @@ void	Response::make_body()
 	// GET
 	if (context.request.method[0] == "GET")
 	{
-		if( stat(path.c_str(),&s) == 0 && (version_code_message[1][0] != '4' || version_code_message[1][0] != '5'))
+		if( stat(path.c_str(),&s) == 0 && (version_code_message[1][0] != '4' && version_code_message[1][0] != '5'))
 		{
 			if( s.st_mode & S_IFDIR ) // If is a directory
 			{
@@ -178,17 +197,24 @@ void	Response::make_body()
 			}
 			else if( s.st_mode & S_IFREG ) // If is a regular file
 			{
-				if (context.request.path[0].find(".php") != std::string::npos)
+				if (context.request.path[0].find(CGI) != std::string::npos)
 				{
 					if (context.location.cgi[0] == "on")
 					{
 						CgiHandler cgi(context);
-						add_string_to_vector(cgi.executeCGI(path));
+						std::string cgi_response = cgi.executeCGI(path);
+						if (cgi_response.empty())
+						{
+							set_status("500");
+							get_error_page();
+						}
+						else
+							add_string_to_vector(cgi_response);
 					}
 					else
 					{
 						set_status("403");
-						add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
+						get_error_page();
 					}
 				}
 				else
@@ -197,29 +223,36 @@ void	Response::make_body()
 			else
 			{
 				set_status("418");
-				add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
+				get_error_page();
 			}
 		}
 		else
-			add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
+			get_error_page();
 	}
 	
 	// POST
 	if (context.request.method[0] == "POST")
 	{
-		if( stat(path.c_str(),&s) == 0 && (version_code_message[1][0] != '4' || version_code_message[1][0] != '5') )
+		if( stat(path.c_str(),&s) == 0 && (version_code_message[1][0] != '4' && version_code_message[1][0] != '5') )
 		{
-			if (context.request.path[0].find(".php") != std::string::npos)
+			if (context.request.path[0].find(CGI) != std::string::npos)
 			{
 				if (context.location.cgi[0] == "on")
 				{
 					CgiHandler cgi(context);
-					add_string_to_vector(cgi.executeCGI(path));
+					std::string cgi_response = cgi.executeCGI(path);
+					if (cgi_response.empty())
+					{
+						set_status("500");
+						get_error_page();
+					}
+					else
+						add_string_to_vector(cgi_response);
 				}
 				else
 				{
 					set_status("403");
-					add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
+					get_error_page();
 				}
 			}
 			else
@@ -232,32 +265,39 @@ void	Response::make_body()
 				
 		}
 		else
-			add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
+			get_error_page();
 	}
 	
 	// DELETE
 	else if (context.request.method[0] == "DELETE")
 	{
-		if( stat(path.c_str(),&s) == 0 && (version_code_message[1][0] != '4' || version_code_message[1][0] != '5') )
+		if( stat(path.c_str(),&s) == 0 && (version_code_message[1][0] != '4' && version_code_message[1][0] != '5') )
 		{
-			if (context.request.path[0].find(".php") != std::string::npos)
+			if (context.request.path[0].find(CGI) != std::string::npos)
 			{
 				if (context.location.cgi[0] == "on")
 				{
 					CgiHandler cgi(context);
-					add_string_to_vector(cgi.executeCGI(path));
+					std::string cgi_response = cgi.executeCGI(path);
+					if (cgi_response.empty())
+					{
+						set_status("500");
+						get_error_page();
+					}
+					else
+						add_string_to_vector(cgi_response);
 				}
 				else
 				{
 					set_status("403");
-					add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
+					get_error_page();
 				}
 			}
-			else if (remove(path.c_str()))
-				add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
+			else if (std::remove(path.c_str()))
+				get_error_page();
 		}
 		else
-			add_string_to_vector("Status code : " + version_code_message[1] + "/" + version_code_message[2]);
+			get_error_page();
 	}
 }
 
