@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/27 16:59:20 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/27 17:49:01 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,8 +214,13 @@ void	Response::make_body(std::string path)
 						make_body(new_path);
 					else
 					{
-						set_status("404");
-						get_error_page();
+						if (context.location.autoindex[0] == "on")
+							directory_listing(path);
+						else
+						{
+							set_status("404");
+							get_error_page();
+						}
 					}		
 				}
 				else if (context.location.autoindex[0] == "on")

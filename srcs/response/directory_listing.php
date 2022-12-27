@@ -24,11 +24,10 @@ parse_str($entityBody, $BODY);
 		$dir = scandir($wdir);
 		foreach ($dir as $doc)
 		{
-			echo '<h1>' . $doc . '</h1>';
-			if ($_SERVER['QUERY_STRING'] == "/")
-				echo '<a href="'. $_SERVER['QUERY_STRING'].$doc .'">'.$doc.'</a>';
+			if (substr($_SERVER['QUERY_STRING'], -1) == '/')
+				echo '<h1><a href="'. $_SERVER['QUERY_STRING'].$doc.'">'.$doc.'</a></h1>';
 			else
-				echo '<a href="'. $_SERVER['QUERY_STRING']."/".$doc .'">'.$doc.'</a>';
+				echo '<h1><a href="'. $_SERVER['QUERY_STRING']."/".$doc.'">'.$doc.'</a></h1>';
 		}
 	?>
 </body>
