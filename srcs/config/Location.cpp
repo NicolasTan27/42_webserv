@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 17:15:52 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/26 17:54:43 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/27 17:14:49 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ Location::Location() :
 	path("location", "/", "<"),
 	allowed_methods("allowed_methods", "GET", ","),
 	rewrite("rewrite", "", ","),
-	root("root", "./data", ""),
+	root("root", "data", ""),
 	autoindex("autoindex", "on", ""),
 	cgi("cgi", "off", ""),
 	index("index", "", ""),

@@ -6,7 +6,8 @@ parse_str($entityBody, $BODY);
 ?>
 
 <?php
-	print_r($_SERVER);
+	$cwd = getcwd();
+	// print_r($_SERVER);
 	$wdir = $_SERVER['PATH_INFO'];
 ?>
 
@@ -20,15 +21,14 @@ parse_str($entityBody, $BODY);
 
 <body>
 	<?php
-		$dir = scandir($savedir);
+		$dir = scandir($wdir);
 		foreach ($dir as $doc)
 		{
-			if ($doc != '.' && $doc != '..')
-			{
-				$op = fopen($wdir . $doc, 'r');
-				echo '<h1>' . $doc . '</h1>';
-				echo '<div>' . fread($op, filesize($wdir . $doc)) . '</div>';
-			}
+			echo '<h1>' . $doc . '</h1>';
+			if ($_SERVER['QUERY_STRING'] == "/")
+				echo '<a href="'. $_SERVER['QUERY_STRING'].$doc .'">'.$doc.'</a>';
+			else
+				echo '<a href="'. $_SERVER['QUERY_STRING']."/".$doc .'">'.$doc.'</a>';
 		}
 	?>
 </body>
