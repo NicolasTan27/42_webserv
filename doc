@@ -10,3 +10,6 @@ curl -X POST -H "Content_Type:plain/text" --data "123456789"
 
 # nginx tester
 https://nginx.viraptor.info/
+
+https://stackoverflow.com/questions/15560336/listen-to-multiple-ports-from-one-server
+https://kernal.eu/posts/listen-on-multiple-sockets/
