@@ -13,3 +13,10 @@ https://nginx.viraptor.info/
 
 https://stackoverflow.com/questions/15560336/listen-to-multiple-ports-from-one-server
 https://kernal.eu/posts/listen-on-multiple-sockets/
+
+Reste a faire :
+
+- gérer plusieurs ports
+- la requete est parfois splité
+- siege sur les pc de l'ecole
+- passer l'argv dans le main
