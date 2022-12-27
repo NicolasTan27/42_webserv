@@ -7,7 +7,7 @@ parse_str($entityBody, $BODY);
 
 <?php
 	$wdir = '/mnt/nfs/homes/ntan/Desktop/42_webserv/data/cgi/php/saved_files/';
-	if ($_SERVER['REQUEST_METHOD'] == 'POST' && $BODY['file'] != '')
+	if ($_SERVER['REQUEST_METHOD'] == 'DELETE' && $BODY['file'] != '')
 	{
 		unlink($wdir . $BODY['file']);
 	}
@@ -25,7 +25,7 @@ parse_str($entityBody, $BODY);
 <div> <a href="main.php">Main</a> <a href="post.php">Post</a> <a href="delete.php">Delete</a> </div>
 <h1>File Destroyer</h1>
 
-<form action="delete.php" method="post">
+<form action="deletev2.php" method="post" onsubmit="test()">
  	<label for="file">Select a file to delete:</label>
   	<select name="file" id="file">
   		<option value="">Select a file</option>
@@ -45,6 +45,19 @@ parse_str($entityBody, $BODY);
 	<br><br>
 	<input type="submit" value="delete">
 </form>
+
+<script>
+	function test() {
+		// let value = 'file=' + oForm.elements["file"];
+		// console.log(value);
+		fetch("deletev2.php",
+		{
+			method: 'DELETE',
+			body: '11111'
+		}
+		);
+	}
+</script>
 
 </body>
 </html>
