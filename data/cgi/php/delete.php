@@ -8,6 +8,7 @@ parse_str($entityBody, $BODY);
 <?php
 	$cwd = getcwd();
 	$wdir = $cwd . '/data/cgi/php/saved_files/';
+	// print_r($BODY);
 	if ($_SERVER['REQUEST_METHOD'] == 'DELETE' && $BODY['file'] != '')
 	{
 		unlink($wdir . $BODY['file']);
@@ -23,7 +24,7 @@ parse_str($entityBody, $BODY);
 </head>
 
 <body>
-<div> <a href="/cgi/php/main.php">Main</a> <a href="/cgi/php/post.php">Post</a> <a href="/cgi/php/delete.php">Delete</a> </div>
+<div> <a href="/cgi/php/main.php">Main</a> <a href="/cgi/php/upload.php">Upload</a> <a href="/cgi/php/post.php">Post</a> <a href="/cgi/php/delete.php">Delete</a> </div>
 <h1>File Destroyer</h1>
 
 <form action="delete.php" method="post" onsubmit="test()">

@@ -6,12 +6,13 @@ parse_str($entityBody, $BODY);
 ?>
 
 <?php
+	// print_r($BODY);
 	$cwd = getcwd();
-	// echo $cwd;
 	$wdir = $cwd . '/data/cgi/php/';
-	if ($_SERVER['REQUEST_METHOD'] == 'POST')
+	if ($_SERVER['REQUEST_METHOD'] == 'POST' && $BODY['filename'] != "")
 	{
-		$filename =  $wdir . 'saved_files/' . $BODY['filename'];
+		$nfile = $BODY['filename'];
+		$filename =  $wdir . 'saved_files/' . str_replace('"', "", $nfile);;
 		$file = fopen($filename, "w") or die ("Unable to open file");
 		fwrite($file, $BODY['content']);
 	}
@@ -26,7 +27,7 @@ parse_str($entityBody, $BODY);
 </head>
 
 <body>
-<div> <a href="/cgi/php/main.php">Main</a> <a href="/cgi/php/post.php">Post</a> <a href="/cgi/php/delete.php">Delete</a> </div>
+<div> <a href="/cgi/php/main.php">Main</a> <a href="/cgi/php/upload.php">Upload</a> <a href="/cgi/php/post.php">Post</a> <a href="/cgi/php/delete.php">Delete</a> </div>
 	<?php
 		$savedir = $wdir . 'saved_files/';
 		$dir = scandir($savedir);

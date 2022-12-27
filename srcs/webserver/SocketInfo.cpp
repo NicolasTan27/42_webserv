@@ -190,7 +190,7 @@ void	SocketInfo::server_loop()
 							close_connec = TRUE;
 							break ;
 						}
-						buffer[ret] = '\0';
+						// buffer[ret] = '\0';
 						if (ret == 0)
 						{
 							close_connec = TRUE;

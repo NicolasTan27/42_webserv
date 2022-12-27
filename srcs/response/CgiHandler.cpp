@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 15:56:33 by rsung             #+#    #+#             */
-/*   Updated: 2022/12/27 17:23:10 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/27 22:37:00 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,23 @@
 
 // CgiHandler::CgiHandler(void) {}
 
+std::string	vector_to_str(std::vector<std::string> &vec_list)
+{
+	typedef std::vector<std::string>::iterator	iterator;
+	std::string res;
+	size_t i = 0;
+	for (iterator beg = vec_list.begin(); beg != vec_list.end(); ++beg, i++)
+	{
+		res += *beg;
+	}
+	return (res);
+}
+
 CgiHandler::CgiHandler(Context &context) : context(context)
 {
-	if (context.request.body.values.size() >= 3 && !context.request.body[2].empty())
-		_body = context.request.body[2];
+	if (!context.request.body.values.empty())
+		_body = vector_to_str(context.request.body.values);
+		// _body = context.request.body[2];
 	else
 		_body = std::string();
 	this->_initEnv();
@@ -49,7 +62,8 @@ void	CgiHandler::_initEnv()
 {
 	this->_env["REDIRECT_STATUS"] = "200";
 	this->_env["GATEWAY_INTERFACE"] = "CGI/1.1";
-	this->_env["CONTENT_TYPE"] = "";
+	// this->_env["CONTENT_DISPOSITION"] = context.request.content_disposition[0];
+	this->_env["CONTENT_TYPE"] = context.request.content_type[0];
 	this->_env["CONTENT_LENGTH"] = this->_body.length();
 	this->_env["HTTP_USER_AGENT"] = context.request.user_agent[0];
 	this->_env["PATH_INFO"] = context.location.root[0] + context.request.path[0]; //path for CGI script

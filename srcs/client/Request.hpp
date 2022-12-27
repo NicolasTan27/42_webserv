@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:58:39 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/21 18:34:00 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/27 23:01:11 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,21 @@ class Request {
 	public:	
 		void	print_request();
 		void	parse_request();
-		void	parse_request_forest(std::string name, std::string value);
+		void	parse_request_forest(std::string line, std::string name, std::string value);
 
 	public:
 		std::string request; // raw content
 
 	public:
+		Keys	http;
 		Keys	method; 	// method for this request
 		Keys	path; 		// path for this request
 		Keys	version; 	// protocol/version for this request
 		Keys	host;		// ip and port for virtual server
 		Keys	body;		// content sended with the request, commonly used with POST
-		Keys	user_agent; 
+		Keys	user_agent;
+		Keys	content_disposition;
+		Keys	content_type;
 };
 
 #endif
