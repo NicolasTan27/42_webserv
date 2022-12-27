@@ -26,7 +26,7 @@ parse_str($entityBody, $BODY);
 </head>
 
 <body>
-<div> <a href="main.php">Main</a> <a href="post.php">Post</a> <a href="delete.php">Delete</a> </div>
+<div> <a href="/cgi/php/main.php">Main</a> <a href="/cgi/php/post.php">Post</a> <a href="/cgi/php/delete.php">Delete</a> </div>
 	<?php
 		$savedir = $wdir . 'saved_files/';
 		$dir = scandir($savedir);

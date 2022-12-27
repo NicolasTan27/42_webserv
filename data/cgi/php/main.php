@@ -10,7 +10,7 @@
 </head>
 
 <body>
-	<div> <a href="main.php">Main</a> <a href="post.php">Post</a> <a href="delete.php">Delete</a> </div>
+<div> <a href="/cgi/php/main.php">Main</a> <a href="/cgi/php/post.php">Post</a> <a href="/cgi/php/delete.php">Delete</a> </div>
 	<div class="Banner"></div>
 	<style> body {background-color: green;} </style>
 	<h1>MY SPECIAL NOTEPAD</h1>

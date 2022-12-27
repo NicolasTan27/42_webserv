@@ -5,5 +5,8 @@ https://hoppscotch.io/
 # to test different host :
 curl -I -k -H "Host:cdn.site.com" 127.0.0.1:8000
 
+# to test body size
+curl -X POST -H "Content_Type:plain/text" --data "123456789"
+
 # nginx tester
 https://nginx.viraptor.info/

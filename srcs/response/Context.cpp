@@ -47,8 +47,7 @@ void	Context::find_server()
 	// Search a server with exact same ip and port
 	for (size_t i = 0; i < this->config.servers_count; i++)
 	{
-		if ((this->config.servers[i].listen[0] == "127.0.0.1" 
-				|| this->config.servers[i].listen[0] == "localhost")
+		if ((this->config.servers[i].listen[0] == this->request.host[0])
 				&& this->config.servers[i].listen[1] == this->request.host[1])
 		{
 			this->servers.push_back(this->config.servers[i]);
@@ -144,7 +143,7 @@ void	Context::find_location()
 			match_count.push_back(res);
 		}
 	}
-	if (*std::max_element(match_count.begin(), match_count.end()) != 0)
+	if (this->server.locations_count > 0 && *std::max_element(match_count.begin(), match_count.end()) != 0)
 	{
 		this->location = this->server.locations[std::max_element(match_count.begin(), match_count.end()) - match_count.begin()];
 		return;
