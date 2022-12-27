@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 15:56:33 by rsung             #+#    #+#             */
-/*   Updated: 2022/12/26 14:19:54 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/27 17:01:37 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	CgiHandler::_initEnv()
 	this->_env["CONTENT_TYPE"] = "";
 	this->_env["CONTENT_LENGTH"] = this->_body.length();
 	this->_env["HTTP_USER_AGENT"] = context.request.user_agent[0];
-	this->_env["PATH_INFO"] = context.request.path[0]; //path for CGI script
+	this->_env["PATH_INFO"] = context.location.root[0] + context.request.path[0]; //path for CGI script
 	this->_env["PATH_TRANSLATED"] = context.location.root[0];
 	this->_env["QUERY_STRING"] = context.request.path[0];
 	this->_env["REMOTE_ADDR"] = context.request.host[1];

@@ -6,7 +6,8 @@ parse_str($entityBody, $BODY);
 ?>
 
 <?php
-	$wdir = '/mnt/nfs/homes/ntan/Desktop/42_webserv/data/cgi/php/saved_files/';
+	$cwd = getcwd();
+	$wdir = $cwd . '/data/cgi/php/saved_files/';
 	if ($_SERVER['REQUEST_METHOD'] == 'DELETE' && $BODY['file'] != '')
 	{
 		unlink($wdir . $BODY['file']);

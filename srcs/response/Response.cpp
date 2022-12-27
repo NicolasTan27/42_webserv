@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/27 14:46:29 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/27 16:59:20 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ int	Response::directory_listing(std::string path)
 	
 	(void)path;
 	CgiHandler cgi(context);
-	std::string cgi_response = cgi.executeCGI("./data/cgi/php/directory_listing.php");
+	std::string cgi_response = cgi.executeCGI("./srcs/response/directory_listing.php");
 	if (cgi_response.empty())
 	{
 		set_status("500");

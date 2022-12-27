@@ -6,7 +6,9 @@ parse_str($entityBody, $BODY);
 ?>
 
 <?php
-	$wdir = '/mnt/nfs/homes/ntan/Desktop/42_webserv/data/cgi/php/';
+	$cwd = getcwd();
+	// echo $cwd;
+	$wdir = $cwd . '/data/cgi/php/';
 	if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
 		$filename =  $wdir . 'saved_files/' . $BODY['filename'];
