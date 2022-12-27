@@ -1,11 +1,12 @@
 #!/usr/bin/php
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en">	
 	
 <head>
 	<meta charset="UTF-8">
 	<title>Form 42 Webserv</title>
-	<link href="css/main.css" rel="stylesheet">
+	<link href="/cgi/php/css/main.css" rel="stylesheet">
 </head>
 
 <body>

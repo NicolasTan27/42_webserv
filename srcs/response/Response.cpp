@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/26 18:43:52 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/27 14:46:29 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ void	Response::get_error_page()
 	if (pos != end && pos + 1 != end)
 	{
 		// std::cout << "AAAAAAAAAAAAAAA " << (*(pos + 1)).c_str() << std::endl;
-		// if (access((*(pos + 1)).c_str(), R_OK) < 0 && stat((*(pos + 1)).c_str(),&s) && s.st_mode & S_IFREG)
+		// if (access((*(pos + 1)).c_str(), R_OK) < 0 && stat((*(pos + 1)).c_str(),&s) == 0 && s.st_mode & S_IFREG)
 			read_file((*(pos + 1)).c_str());
 	}
 	else
@@ -208,7 +208,8 @@ void	Response::make_body(std::string path)
 			{
 				if (!context.location.index[0].empty())
 				{
-					std::string new_path = path + "/" + context.location.index[0];
+					std::string new_path;
+					new_path = path + "/" + context.location.index[0];
 					if (stat(new_path.c_str(), &s) == 0 && s.st_mode & S_IFREG)
 						make_body(new_path);
 					else
@@ -219,10 +220,16 @@ void	Response::make_body(std::string path)
 				}
 				else if (context.location.autoindex[0] == "on")
 					directory_listing(path);
+				else
+				{
+					set_status("418");
+					get_error_page();
+				}
 			}
 			else if( s.st_mode & S_IFREG ) // If is a regular file
 			{
-				if (context.request.path[0].find(CGI) != std::string::npos)
+				// if (context.request.path[0].find(CGI) != std::string::npos)
+				if (path.find(CGI) != std::string::npos)
 				{
 					if (context.location.cgi[0] == "on")
 					{
@@ -288,8 +295,7 @@ void	Response::make_body(std::string path)
 				std::cout << "----- WHAT AM I SUPPOSED TO DO WITH THAT ? -----" << std::endl;
 				for (std::vector<std::string>::iterator it = context.request.body.values.begin(); it != context.request.body.values.end(); it++)
 					std::cout << *it << std::endl;
-			}
-				
+			}	
 		}
 		else
 			get_error_page();

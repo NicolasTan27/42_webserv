@@ -52,7 +52,6 @@ void	Context::find_server()
 				&& this->config.servers[i].listen[1] == this->request.host[1])
 		{
 			this->servers.push_back(this->config.servers[i]);
-			std::cout << "test" << std::endl;
 		}
 	}
 
