@@ -24,9 +24,11 @@ parse_str($entityBody, $BODY);
 <head>
 	<meta charset="UTF-8">
 	<title>Form 42 Webserv</title>
+	<link href="/cgi/php/css/post.css" rel="stylesheet">
 </head>
 
 <body>
+		<style> body {background-color: green;} </style>
 <div> <a href="/cgi/php/main.php">Main</a> <a href="/cgi/php/upload.php">Upload</a> <a href="/cgi/php/post.php">Post</a> <a href="/cgi/php/delete.php">Delete</a> </div>
 	<?php
 		$savedir = $wdir . 'saved_files/';
@@ -36,10 +38,15 @@ parse_str($entityBody, $BODY);
 			if ($doc != '.' && $doc != '..')
 			{
 				$op = fopen($savedir . $doc, 'r');
+				echo' <style>
+				h1 {}</style>';
 				echo '<h1>' . $doc . '</h1>';
-				echo '<div>' . fread($op, filesize($savedir . $doc)) . '</div>';
+				echo' <style>
+				h2 {}</style>';
+				echo '<h2>' . fread($op, filesize($savedir . $doc)) . '</h2>';
 			}
 		}
+		
 	?>
 </body>
 
