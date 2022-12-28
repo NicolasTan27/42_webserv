@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   SocketInfo.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sojung <sojung@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 17:13:35 by rsung             #+#    #+#             */
-/*   Updated: 2022/12/28 13:53:32 by sojung           ###   ########.fr       */
+/*   Updated: 2022/12/28 14:42:31 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 class	SocketInfo
 {
 	private:
-
+		// int						ports[2];
 		int						server_fd, on, max_fd, end_server, len;
 		struct sockaddr_in		address;
 		fd_set					master_set, working_set;
@@ -50,10 +50,12 @@ class	SocketInfo
 		~SocketInfo(){}
 		SocketInfo(const SocketInfo &other);
 		SocketInfo &operator=(const SocketInfo &other);
+		struct sockaddr_in set_sockaddr(struct sockaddr_in &address, int ip, int port);
+		void	add_socket(int ip, int port);
 		int		create_socket(void);
 		int		set_socket_option(void);
 		int		set_non_blocking(void);
-		int		bind_socket(void);
+		int		bind_socket(struct sockaddr_in &address);
 		int		listen_socket(void);
 		void	init_master_set(void);
 		void	server_loop(void);

@@ -15,12 +15,14 @@
 
 SocketInfo::SocketInfo(Config conf) : server_fd(-1), on(1), config(conf)
 {
-	std::memset((char*) &address, 0, sizeof(address));
-	address.sin_family = AF_INET;
-	address.sin_addr.s_addr = htonl(INADDR_ANY);
-	address.sin_port = htons(PORT);
+	// ports[0] = 8000;
+	// ports[1] = 8080;
+	// std::memset((char*) &address, 0, sizeof(address));
+	// address.sin_family = AF_INET;
+	// address.sin_addr.s_addr = htonl(INADDR_ANY);
+	// address.sin_port = htons(PORT);
 	end_server = FALSE;
-//	FD_ZERO(&master_set);
+	FD_ZERO(&master_set);
 }
 
 SocketInfo::SocketInfo(const SocketInfo &other)
@@ -41,6 +43,15 @@ SocketInfo& SocketInfo::operator=(const SocketInfo &other)
 	this->timeout = other.timeout;
 //	this->buffer = other.buffer;
 	return (*this);
+}
+
+struct sockaddr_in SocketInfo::set_sockaddr(struct sockaddr_in &address, int ip, int port)
+{
+	std::memset((char*) &address, 0, sizeof(address));
+	address.sin_family = AF_INET;
+	address.sin_addr.s_addr = htonl(ip);
+	address.sin_port = htons(port);
+	return (address);
 }
 
 int SocketInfo::create_socket()
@@ -82,7 +93,7 @@ int	SocketInfo::set_non_blocking()
 	return (0);
 }
 
-int SocketInfo::bind_socket()
+int SocketInfo::bind_socket(struct sockaddr_in &address)
 {
 	int	ret = -1;
 
@@ -110,9 +121,39 @@ int	SocketInfo::listen_socket()
 	return (0);
 }
 
+void	SocketInfo::add_socket(int ip, int port)
+{
+	struct sockaddr_in address;
+
+	// set_sockaddr(address, ip, port);
+	std::memset((char*) &address, 0, sizeof(address));
+	address.sin_family = AF_INET;
+	address.sin_addr.s_addr = htonl(ip);
+	address.sin_port = htons(port);
+
+	create_socket();
+	set_socket_option();
+	set_non_blocking();
+
+	// bind_socket(address);
+	int	ret = -1;
+
+	ret = bind(this->server_fd, (struct sockaddr*)&address, sizeof(address));
+	std::cout << "errno: " << strerror(errno) << std::endl;
+	if (ret < 0)
+	{
+		std::cerr << "error: bind() failed" << std::endl;
+		close(this->server_fd);
+		return;
+	}
+
+	listen_socket();
+	init_master_set();
+}
+
 void	SocketInfo::init_master_set()
 {
-	FD_ZERO(&(this->master_set));
+	// FD_ZERO(&(this->master_set));
 	this->max_fd = this->server_fd;
 	FD_SET(server_fd, &master_set);
 }
