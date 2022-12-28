@@ -173,57 +173,51 @@ void	SocketInfo::server_loop()
 				else
 				{
 					close_connec = FALSE;
-					do
+					char tmp_buffer[1024];
+					buffer.clear();
+					while ((ret = recv(i, tmp_buffer, sizeof(tmp_buffer), MSG_DONTWAIT)) > 0)
 					{
-						ret = recv(i, buffer, sizeof(buffer), MSG_DONTWAIT);
-						if (ret < 0)
-						{
-							if (errno != EWOULDBLOCK /*&& errno != EAGAIN*/)
-							{
-								/*std::cerr << i << std::endl;
-								std::cerr << ret << std::endl;
-								std::cerr << buffer << std::endl;*/
-								//std::cerr << errno << std::endl;
-								std::cerr << "error: recv() failed" << std::endl;
-								//close_connec = TRUE;
-							}
-							close_connec = TRUE;
-							break ;
-						}
-						// buffer[ret] = '\0';
-						if (ret == 0)
+						buffer.append(tmp_buffer, ret);
+						if (tmp_buffer[ret - 1] == 0)
 						{
 							close_connec = TRUE;
 							break ;
 						}
-						// SEND HTML PAGE :
+					}
+					
+					if (ret < 0)
+					{
+						if (errno != EWOULDBLOCK /*&& errno != EAGAIN*/)
+							std::cerr << "error: recv() failed" << std::endl;
+						close_connec = TRUE;
+					}
+					if (ret == 0)
+						close_connec = TRUE;
 
-						std::string str_buf(buffer, ret);
+					// SEND HTML PAGE :
+					std::string str_buf(buffer.c_str(), buffer.size());
 
-						Request		request(str_buf);
-						request.print_request();
+					Request		request(str_buf);
+					request.print_request();
 						
-						Context		context(config, request);
-						context.print_context();
+					Context		context(config, request);
+					context.print_context();
 						
-						Response	response(context);
-						response.print_response();
-						// if (context.request.method[0] == "POST")
-						// 	data.addUser(request.body[2]);
-						// else if(context.request.method[0] == "DELETE")
-						// 	data.deleteUser(request.body[2]);
-						std::vector<unsigned char> vector_response = response.get_vector();
-			// 			write(fds[i].fd, vector_response.data(), vector_response.size());
-			// 			write(1, vector_response.data(), vector_response.size());
-						len = ret;
-						ret = send(i, vector_response.data(), vector_response.size(), 0);		
-						if (ret < 0)
-						{
-							std::cerr << "error: send() failed" << std::endl;
-							close_connec = TRUE;
-							break ; 
-						}
-					} while (TRUE);
+					Response	response(context);
+					response.print_response();
+
+					std::vector<unsigned char> vector_response = response.get_vector();
+
+					len = ret;
+					ret = send(i, vector_response.data(), vector_response.size(), 0);
+
+					if (ret < 0)
+					{
+						std::cerr << "error: send() failed" << std::endl;
+						close_connec = TRUE;
+		
+					}
+
 					if (close_connec == TRUE)
 					{
 						close(i);
