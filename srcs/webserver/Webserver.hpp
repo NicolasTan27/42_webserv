@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserver.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: soyoungjung <soyoungjung@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 17:18:18 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/20 18:59:23 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/28 22:07:33 by soyoungjung      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@
 #include <cstring>
 #include <iostream>
 #include <sys/socket.h>
+#include <arpa/inet.h>
 #include "netinet/in.h"
 #include <poll.h>
-#include <sys/epoll.h>
+//#include <sys/epoll.h>
 #include <cstring>
 
 # include "../config/Config.hpp"
