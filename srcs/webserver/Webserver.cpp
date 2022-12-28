@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 17:18:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/28 16:23:14 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/28 18:11:07 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	Webserver::start()
 	port[1] = 8002;
 	// for (int i = 0; i < 2; i++)
 		test.add_socket(INADDR_ANY, port[0]);
+		test.add_socket(INADDR_ANY, port[1]);
 	
 	// test.init_master_set();
 	test.set_timeout();
