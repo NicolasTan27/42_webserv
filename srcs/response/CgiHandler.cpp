@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 15:56:33 by rsung             #+#    #+#             */
-/*   Updated: 2022/12/27 22:37:00 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/28 17:23:44 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	CgiHandler::_initEnv()
 	this->_env["REDIRECT_STATUS"] = "200";
 	this->_env["GATEWAY_INTERFACE"] = "CGI/1.1";
 	// this->_env["CONTENT_DISPOSITION"] = context.request.content_disposition[0];
-	this->_env["CONTENT_TYPE"] = context.request.content_type[0];
+	// this->_env["CONTENT_TYPE"] = context.request.content_type[0];
 	this->_env["CONTENT_LENGTH"] = this->_body.length();
 	this->_env["HTTP_USER_AGENT"] = context.request.user_agent[0];
 	this->_env["PATH_INFO"] = context.location.root[0] + context.request.path[0]; //path for CGI script

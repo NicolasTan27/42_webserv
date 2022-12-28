@@ -167,11 +167,138 @@ void	SocketInfo::set_timeout()
 
 void	SocketInfo::server_loop()
 {
-	int	ret, desc_ready, new_fd, close_connec, i;
+	// int	ret, desc_ready, new_fd, close_connec, i;
 
+	// UserData	data;
+	// ret = -1;
+	// desc_ready = 0;
+	// do
+	// {
+	// 	std::memcpy(&working_set, &master_set, sizeof(master_set));
+	// 	ret = select(this->max_fd + 1, &working_set, NULL, NULL, &timeout);
+	// 	if (ret < 0)
+	// 	{
+	// 		std::cerr << "error: select() failed" << std::endl;
+	// 		break ;
+	// 	}
+	// 	if (ret == 0)
+	// 	{
+	// 		std::cerr << "select() timed out. End of program" << std::endl;
+	// 		return ;
+	// 	}
+	// 	desc_ready = ret;
+	// 	for (i = 3; i <= max_fd && desc_ready > 0; ++i)
+	// 	{
+	// 		if (FD_ISSET(i, &working_set))
+	// 		{
+	// 			desc_ready -= 1;
+	// 			if (i == server_fd)
+	// 			{
+	// 				do
+	// 				{
+	// 					new_fd = accept(this->server_fd, NULL, NULL);
+	// 					if (new_fd < 0)
+	// 					{
+	// 						if (errno != EWOULDBLOCK)
+	// 						{
+	// 							std::cerr << "error: accept() failed" << std::endl;
+	// 							end_server = TRUE;
+	// 						}
+	// 						break ;
+	// 					}
+	// 					FD_SET(new_fd, &master_set);
+	// 					if (new_fd > max_fd)
+	// 						max_fd = new_fd;
+	// 				} while (new_fd != -1);
+	// 			}
+	// 			else
+	// 			{
+	// 				close_connec = FALSE;
+	// 				char tmp_buffer[102400];
+	// 				std::memset(tmp_buffer, 0, sizeof(tmp_buffer));
+	// 				while ((ret = recv(i, tmp_buffer, sizeof(tmp_buffer), MSG_DONTWAIT)) > 0)
+	// 				{
+	// 					// int i = -1;
+	// 					// while (tmp_buffer[++i])
+	// 					// 	printf("%d,", tmp_buffer[i]);
+	// 					std::cout << "coucou :" <<  tmp_buffer << std::endl;
+	// 					buffer.append(tmp_buffer, ret);
+	// 					if (tmp_buffer[ret] != 0)
+	// 					{
+	// 						// close_connec = TRUE;
+	// 						break ;
+	// 					}
+	// 				}
+	// 				if (wait == 1)
+	// 				{
+	// 					close(i);
+	// 					FD_CLR(i, &master_set);
+	// 					if (i == max_fd)
+	// 					{
+	// 						while (FD_ISSET(max_fd, &master_set) == FALSE)
+	// 							max_fd -= 1;
+	// 					}
+	// 				}
+					
+	// 				if (ret < 0)
+	// 				{
+	// 					if (errno != EWOULDBLOCK /*&& errno != EAGAIN*/)
+	// 						std::cerr << "error: recv() failed" << std::endl;
+	// 					close_connec = TRUE;
+	// 				}
+	// 				if (ret == 0)
+	// 					close_connec = TRUE;
+
+	// 				// SEND HTML PAGE :
+	// 				std::string str_buf(buffer.c_str(), buffer.size());
+	// 				buffer.clear();
+
+	// 				Request		request(str_buf);
+	// 				request.print_request();
+						
+	// 				Context		context(config, request);
+	// 				context.print_context();
+						
+	// 				Response	response(context);
+	// 				response.print_response();
+
+	// 				std::vector<unsigned char> vector_response = response.get_vector();
+
+	// 				len = ret;
+	// 				ret = send(i, vector_response.data(), vector_response.size(), 0);
+
+	// 				if (ret < 0)
+	// 				{
+	// 					std::cerr << "error: send() failed" << std::endl;
+	// 					close_connec = TRUE;
+		
+	// 				}
+
+	// 				if (close_connec == TRUE)
+	// 				{
+	// 					close(i);
+	// 					FD_CLR(i, &master_set);
+	// 					if (i == max_fd)
+	// 					{
+	// 						while (FD_ISSET(max_fd, &master_set) == FALSE)
+	// 							max_fd -= 1;
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// } while (end_server == FALSE);
+	// for (int j = 3; j <= max_fd; j++)
+	// {
+	// 	if (FD_ISSET(j, &master_set))
+	// 		close(j);
+	// }
+	int	ret, desc_ready, new_fd, close_connec, i, wait;
+	Request		request;
 	UserData	data;
 	ret = -1;
 	desc_ready = 0;
+	wait = 0;
 	do
 	{
 		std::memcpy(&working_set, &master_set, sizeof(master_set));
@@ -214,51 +341,80 @@ void	SocketInfo::server_loop()
 				else
 				{
 					close_connec = FALSE;
-					char tmp_buffer[1024];
-					buffer.clear();
-					while ((ret = recv(i, tmp_buffer, sizeof(tmp_buffer), MSG_DONTWAIT)) > 0)
+					do
 					{
-						buffer.append(tmp_buffer, ret);
-						if (tmp_buffer[ret - 1] == 0)
+						std::memset(buffer, 0, sizeof(buffer));
+						ret = recv(i, buffer, sizeof(buffer), MSG_DONTWAIT);
+						if (ret < 0)
+						{
+							if (errno != EWOULDBLOCK /*&& errno != EAGAIN*/)
+							{
+								/*std::cerr << i << std::endl;
+								std::cerr << ret << std::endl;
+								std::cerr << buffer << std::endl;*/
+								//std::cerr << errno << std::endl;
+								std::cerr << "error: recv() failed" << std::endl;
+								//close_connec = TRUE;
+							}
+							close_connec = TRUE;
+							break ;
+						}
+						// buffer[ret] = '\0';
+
+						if (ret == 0)
 						{
 							close_connec = TRUE;
 							break ;
 						}
-					}
-					
-					if (ret < 0)
-					{
-						if (errno != EWOULDBLOCK /*&& errno != EAGAIN*/)
-							std::cerr << "error: recv() failed" << std::endl;
-						close_connec = TRUE;
-					}
-					if (ret == 0)
-						close_connec = TRUE;
+						// SEND HTML PAGE :
 
-					// SEND HTML PAGE :
-					std::string str_buf(buffer.c_str(), buffer.size());
+						// std::cout << "\n TEST :" << (int) buffer[ret - 1] << std::endl;
+						// std::cout << "\n FD:" << i <<  " / [BUFFER]\n" << buffer << std::endl;
+						std::string str_buf(buffer, ret);
+						// if (str_buf.find("multipart/form-data") != std::string::npos)
+						// 	wait = 1;
 
-					Request		request(str_buf);
-					request.print_request();
+						std::cout << "test : " << str_buf << std::endl;
+						if (str_buf.find("multipart/form-data") != std::string::npos)
+						{
+							request = Request(str_buf);
+							// if (request.body.values.size() <= 1)
+							// {
+								wait = 1;
+								continue;
+							// }
+						}
+						else if (wait != 1)
+							request = Request(str_buf);
 						
-					Context		context(config, request);
-					context.print_context();
+						if (wait == 1)
+						{
+							request.add_to_body(str_buf);
+							wait = 0;
+						}
+						request.print_request();
+
+						Context		context(config, request);
+						context.print_context();
 						
-					Response	response(context);
-					response.print_response();
-
-					std::vector<unsigned char> vector_response = response.get_vector();
-
-					len = ret;
-					ret = send(i, vector_response.data(), vector_response.size(), 0);
-
-					if (ret < 0)
-					{
-						std::cerr << "error: send() failed" << std::endl;
-						close_connec = TRUE;
-		
-					}
-
+						Response	response(context);
+						response.print_response();
+						// if (context.request.method[0] == "POST")
+						// 	data.addUser(request.body[2]);
+						// else if(context.request.method[0] == "DELETE")
+						// 	data.deleteUser(request.body[2]);
+						std::vector<unsigned char> vector_response = response.get_vector();
+			// 			write(fds[i].fd, vector_response.data(), vector_response.size());
+			// 			write(1, vector_response.data(), vector_response.size());
+						len = ret;
+						ret = send(i, vector_response.data(), vector_response.size(), 0);		
+						if (ret < 0)
+						{
+							std::cerr << "error: send() failed" << std::endl;
+							close_connec = TRUE;
+							break ; 
+						}
+					} while (TRUE);
 					if (close_connec == TRUE)
 					{
 						close(i);

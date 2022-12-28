@@ -6,13 +6,23 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 14:04:34 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/27 23:50:01 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/28 18:04:38 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "Request.hpp"
 
-Request::Request() {}
+Request::Request() : request(std::string()),
+	http("http", "", " "),
+	method("method", "GET", ""),
+	path("path", "/", ""),
+	version("version", "HTTP", ""),
+	host("host", "127.0.0.1:8000", ":"),
+	body("body", "", ""),
+	user_agent("user_agent", "", ""),
+	content_disposition("Content-Disposition", "", ";"),
+	content_type("Content-type", "", ";")
+{}
 
 Request::Request(std::string request) : request(request),
 	http("http", "", " "),
@@ -23,9 +33,9 @@ Request::Request(std::string request) : request(request),
 	body("body", "", ""),
 	user_agent("user_agent", "", ""),
 	content_disposition("Content-Disposition", "", ";"),
-	content_type("Content-type", "", "")
+	content_type("Content-type", "", ";")
 {
-	std::cout << request << std::endl;
+	// std::cout << request << std::endl;
 	parse_request();
 }
 
@@ -105,11 +115,36 @@ void	Request::parse_request_forest(std::string line, std::string name, std::stri
 	}
 	// else if (name == "Content-Type")
 	// {
-	// 	if (content_type[0].empty())
+	// 	if (content_type.values.empty())
 	// 		content_type.setValue(value);
-	// 	else
-	// 		body.addValue(line);
+	// 	// else
+	// 	// 	body.addValue(line);
 	// }
+}
+
+void	Request::add_to_body(std::string buf)
+{
+	std::string line;
+	size_t endline = 0;
+	while (endline != std::string::npos)
+	{
+		endline = buf.find("\n");
+		if (buf.size() == 0)
+			break;
+		line = buf.substr(0, endline);
+		buf = buf.substr(endline + 1);
+		if (!line.empty())
+		{
+			while (line.find("\r") != std::string::npos)
+				line.erase(line.find("\r"));
+			if (line.find("WebKit") != std::string::npos 
+				|| line.find("Content-Type") != std::string::npos)
+				continue;
+			if (line.find("Content-Disposition") != std::string::npos)
+				line = line.substr(line.find_last_of(";") + 1) + "&content=";
+			body.addValue(line);
+		}
+	}
 }
 
 /* ************************************************************************** */

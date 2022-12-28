@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:58:39 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/27 23:01:11 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/28 17:50:49 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ class Request {
 		void	print_request();
 		void	parse_request();
 		void	parse_request_forest(std::string line, std::string name, std::string value);
+		void	add_to_body(std::string buf);
 
 	public:
 		std::string request; // raw content

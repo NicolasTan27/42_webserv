@@ -3,6 +3,7 @@
 $entityBody = stream_get_contents(STDIN);
 // echo "Body = ", $entityBody, "\n";
 parse_str($entityBody, $BODY);
+// print_r($BODY);
 ?>
 
 <?php

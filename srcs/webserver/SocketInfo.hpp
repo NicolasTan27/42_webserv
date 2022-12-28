@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 17:13:35 by rsung             #+#    #+#             */
-/*   Updated: 2022/12/28 14:42:31 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/28 16:48:52 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ class	SocketInfo
 		struct sockaddr_in		address;
 		fd_set					master_set, working_set;
 		struct timeval			timeout;
-		std::string				buffer;
+		char						buffer[50000];
+		// std::string				buffer;
 		Config					config;
 
 	public:
