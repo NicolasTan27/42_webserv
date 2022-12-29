@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   SocketInfo.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sojung <sojung@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 17:13:35 by rsung             #+#    #+#             */
-/*   Updated: 2022/12/28 16:48:52 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/29 16:02:27 by sojung           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,12 @@
 class	SocketInfo
 {
 	private:
-		// int						ports[2];
-		int						server_fd, on, max_fd, end_server, len;
+		std::vector<int>		server_fds;
+		int						on, max_fd, end_server, len;
 		struct sockaddr_in		address;
 		fd_set					master_set, working_set;
 		struct timeval			timeout;
-		char						buffer[50000];
-		// std::string				buffer;
+		char					buffer[50000];
 		Config					config;
 
 	public:
@@ -59,6 +58,7 @@ class	SocketInfo
 		int		bind_socket(struct sockaddr_in &address);
 		int		listen_socket(void);
 		void	init_master_set(void);
+		void	socket_master(std::vector<int> &ports);
 		void	server_loop(void);
 		void	set_timeout(void);
 		

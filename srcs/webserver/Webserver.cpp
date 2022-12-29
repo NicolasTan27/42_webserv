@@ -6,7 +6,7 @@
 /*   By: sojung <sojung@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 17:18:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/29 15:57:26 by sojung           ###   ########.fr       */
+/*   Updated: 2022/12/29 16:04:24 by sojung           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,8 @@ int	Webserver::start()
 	for (size_t i = 0; i < config.servers_count; i++)
 	{
 		port = atoi(config.servers[i].listen.values[1].c_str());
-		std::cout << GREEN << "PORT NUM : " << port << NOR << std::endl;  
 		if (std::find(ports.begin(), ports.end(), port) == ports.end())
-		{
 			ports.push_back(port);
-			std::cout << "push backed port : " << port << std::endl;
-		}
 		else
 		{
 			std::cout << "Same ports detected in the configuration file" << std::endl;
