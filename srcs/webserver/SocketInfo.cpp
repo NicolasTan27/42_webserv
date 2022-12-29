@@ -107,18 +107,72 @@ int SocketInfo::bind_socket(struct sockaddr_in *address, int *fd)
 	return (0);
 }
 
-int SocketInfo::listen_socket(int *fd)
+int SocketInfo::listen_socket()
 {
 	int ret = -1;
 
-	ret = listen(*fd, MAX_BACKLOG);
-	if (ret < 0)
+	for (size_t i = 0; i < this->server_fds.size(); i++)
 	{
-		std::cerr << "error: listen() failed" << std::endl;
-		close(*fd);
-		return (1);
+		ret = listen(server_fds[i], MAX_BACKLOG);
+		if (ret < 0)
+		{
+			std::cerr << "error: listen() failed" << std::endl;
+			close(server_fds[i]);
+			return (1);
+		}
 	}
 	return (0);
+}
+
+void SocketInfo::socket_master(std::vector<int> &ports)
+{
+	int ret = -1;
+
+	for (size_t i = 0; i < ports.size(); i++)
+	{
+		int fd = socket(AF_INET, SOCK_STREAM, 0);
+		if (fd < 0)
+		{
+			std::cerr << "error: socket not created" << std::endl;
+			break;
+		}
+
+		ret = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (char *)&this->on, sizeof(this->on));
+		if (ret < 0)
+		{
+			std::cerr << "error: setsockopt() failed" << std::endl;
+			break;
+		}
+
+		ret = fcntl(fd, F_SETFL, fcntl(fd, F_GETFL, 0) | O_NONBLOCK);
+		if (ret < 0)
+		{
+			std::cerr << "error: fcntl() failed" << std::endl;
+			close(fd);
+			break;
+		}
+		struct sockaddr_in address;
+		std::memset((char *)&address, 0, sizeof(address));
+		address.sin_family = AF_INET;
+		address.sin_addr.s_addr = htonl(INADDR_ANY);
+		address.sin_port = htons(ports[i]);
+
+		std::cout << "Actual FD : " << fd << std::endl;
+		ret = bind(fd, (struct sockaddr *)&address, sizeof(address));
+		if (ret < 0)
+		{
+			std::cerr << "error: bind() failed" << std::endl;
+			close(fd);
+			continue;
+		}
+		this->server_fds.push_back(fd);
+		this->max_fd = fd;
+		FD_SET(fd, &master_set);
+	}
+	std::cout << "BOUND PORTS : ";
+	for (size_t i = 0; i < server_fds.size(); i++)
+		std::cout << server_fds[i] << " ";
+	std::cout << std::endl;
 }
 
 // void	SocketInfo::add_socket(int ip, int port)

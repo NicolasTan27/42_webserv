@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Webserver.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soyoungjung <soyoungjung@student.42.fr>    +#+  +:+       +#+        */
+/*   By: sojung <sojung@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 17:18:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/28 22:27:12 by soyoungjung      ###   ########.fr       */
+/*   Updated: 2022/12/29 14:18:40 by sojung           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Webserver.hpp"
+#define GREEN "\033[1;32m"
+#define NOR "\033[0m"
 
 Webserver::Webserver(const char *path_to_config) : config(path_to_config)
 {
@@ -22,24 +24,21 @@ int Webserver::start()
 {
 	SocketInfo test(this->config);
 
+	std::vector<int> ports;
+	int port;
+
 	for (size_t i = 0; i < config.servers_count; i++)
 	{
-		int fd = -1;
-		test.create_socket(&fd);
-		test.set_socket_option(&fd);
-		test.set_non_blocking(&fd);
-		struct sockaddr_in address;
-		std::memset((char *)&address, 0, sizeof(address));
-		address.sin_family = AF_INET;
-		address.sin_addr.s_addr = htonl(INADDR_ANY);
-		address.sin_port = htons(atoi(config.servers[i].listen.values[1].c_str()));
-		test.bind_socket(&address, &fd);
-		test.server_fds.push_back(fd);
-		test.init_master_set(&fd);
+		port = atoi(config.servers[i].listen.values[1].c_str());
+		std::cout << GREEN << "PORT NUM : " << port << NOR << std::endl;  
+		if (std::find(ports.begin(), ports.end(), port) == ports.end())
+		{
+			ports.push_back(port);
+			std::cout << "push backed port : " << port << std::endl;
+		}
 	}
-	for (size_t i = 0; i < config.servers_count; i++)
-		test.listen_socket(&test.server_fds[i]);
-
+	test.socket_master(ports);
+	test.listen_socket();
 	test.set_timeout();
 	test.server_loop();
 

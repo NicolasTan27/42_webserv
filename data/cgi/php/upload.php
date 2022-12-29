@@ -16,7 +16,7 @@
   
     <form action="/cgi/php/post.php" method="post" enctype="multipart/form-data">       
         <label for="myfile"><p class="Select">Select a file:</label>
-        <input type="file" id="myfile" name="myfile" />
+        <input type="file" id="myfile" name="myfile">
         <br /><br />
         <input type="submit" /></p>
     </form>

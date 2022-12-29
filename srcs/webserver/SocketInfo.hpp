@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   SocketInfo.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soyoungjung <soyoungjung@student.42.fr>    +#+  +:+       +#+        */
+/*   By: sojung <sojung@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 17:13:35 by rsung             #+#    #+#             */
-/*   Updated: 2022/12/28 22:26:54 by soyoungjung      ###   ########.fr       */
+/*   Updated: 2022/12/29 12:38:58 by sojung           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,10 @@ public:
 	int set_socket_option(int *fd);
 	int set_non_blocking(int *fd);
 	int bind_socket(struct sockaddr_in *address, int *fd);
-	int listen_socket(int *fd);
+	int listen_socket(void);
 	void init_master_set(int *fd);
 	void server_loop(void);
 	void set_timeout(void);
+	void socket_master(std::vector<int> &ports);
 };
 #endif

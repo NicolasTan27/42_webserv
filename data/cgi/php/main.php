@@ -14,7 +14,7 @@
 	<div class="Banner"></div>
 	<style> body {background-color: green;} </style>
 	<h1>MY SPECIAL NOTEPAD</h1>
-	<form action="post.php" method="post">
+	<form action="/cgi/php/post.php" method="post">
 	<style>input[type=text], select{width: 300%;
   padding: 40px 80px;
   /*margin: 8px 0;*/
