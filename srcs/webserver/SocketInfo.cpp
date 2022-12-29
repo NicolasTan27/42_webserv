@@ -154,12 +154,55 @@ int SocketInfo::listen_socket()
 // 	init_master_set();
 // }
 
-// void	SocketInfo::init_master_set()
-// {
-// 	// FD_ZERO(&(this->master_set));
-// 	this->max_fd = this->server_fd;
-// 	FD_SET(server_fd, &master_set);
-// }
+int	SocketInfo::listen_socket()
+{
+	int	ret = -1;
+
+	ret = listen(this->server_fd, MAX_BACKLOG);
+	if (ret < 0)
+	{
+		std::cerr << "error: listen() failed" << std::endl;
+		close(this->server_fd);
+		return (1);
+	}
+	return (0);
+}
+
+void	SocketInfo::add_socket(int ip, int port)
+{
+	struct sockaddr_in address;
+
+	// set_sockaddr(address, ip, port);
+	std::memset((char*) &address, 0, sizeof(address));
+	address.sin_family = AF_INET;
+	address.sin_addr.s_addr = htonl(ip);
+	address.sin_port = htons(port);
+
+	create_socket();
+	set_socket_option();
+	set_non_blocking();
+
+	// bind_socket(address);
+	int	ret = -1;
+
+	ret = bind(this->server_fd, (struct sockaddr*)&address, sizeof(address));
+	if (ret < 0)
+	{
+		std::cerr << "error: bind() failed" << std::endl;
+		close(this->server_fd);
+		return;
+	}
+
+	listen_socket();
+	init_master_set();
+}
+
+void	SocketInfo::init_master_set()
+{
+	// FD_ZERO(&(this->master_set));
+	this->max_fd = this->server_fd;
+	FD_SET(server_fd, &master_set);
+}
 
 void	SocketInfo::set_timeout()
 {
@@ -247,11 +290,11 @@ void	SocketInfo::server_loop()
 			if (FD_ISSET(i, &working_set))
 			{
 				desc_ready -= 1;
-				if (i == server_fd)
+				if (i <= server_fd)
 				{
 					do
 					{
-						new_fd = accept(this->server_fd, NULL, NULL);
+						new_fd = accept(i, NULL, NULL);
 						if (new_fd < 0)
 						{
 							if (errno != EWOULDBLOCK)
@@ -275,10 +318,10 @@ void	SocketInfo::server_loop()
 						ret = recv(i, buffer, sizeof(buffer), MSG_DONTWAIT);
 						if (ret < 0)
 						{
-							if (errno != EWOULDBLOCK /*&& errno != EAGAIN*/)
-							{
-								std::cerr << "error: recv() failed " << strerror(errno) << std::endl;
-							}
+							// if (errno != EWOULDBLOCK /*&& errno != EAGAIN*/)
+							// {
+							// 	std::cerr << "error: recv() failed " << strerror(errno) << std::endl;
+							// }
 							close_connec = TRUE;
 							break ;
 						}
@@ -297,7 +340,7 @@ void	SocketInfo::server_loop()
 						{
 							request = Request(str_buf);
 							wait = 1;
-							continue;
+							break;
 						}
 						else if (wait != 1)
 							request = Request(str_buf);

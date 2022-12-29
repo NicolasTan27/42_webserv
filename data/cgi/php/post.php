@@ -12,8 +12,11 @@ parse_str($entityBody, $BODY);
 	$wdir = $cwd . '/data/cgi/php/';
 	if ($_SERVER['REQUEST_METHOD'] == 'POST' && $BODY['filename'] != "")
 	{
+		$upload_dir = '/data/cgi/php/saved_files/';
+		if ($_SERVER['UPLOAD_DIR'])
+			$upload_dir = $_SERVER['UPLOAD_DIR'];
 		$nfile = $BODY['filename'];
-		$filename =  $wdir . 'saved_files/' . str_replace('"', "", $nfile);;
+		$filename =  $cwd . $upload_dir . str_replace('"', "", $nfile);;
 		$file = fopen($filename, "w") or die ("Unable to open file");
 		fwrite($file, $BODY['content']);
 	}
@@ -45,6 +48,9 @@ parse_str($entityBody, $BODY);
 				echo' <style>
 				h2 {}</style>';
 				echo '<h2>' . fread($op, filesize($savedir . $doc)) . '</h2>';
+				echo '<a href="'. 'saved_files/' . $doc .'" download>';
+				echo '<img src="'. 'images/folder.jpeg' .'" alt="Download">';
+			  	echo '</a>';
 			}
 		}
 		

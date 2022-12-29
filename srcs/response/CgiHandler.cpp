@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 15:56:33 by rsung             #+#    #+#             */
-/*   Updated: 2022/12/28 17:23:44 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/29 15:05:59 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	CgiHandler::_initEnv()
 	this->_env["SERVER_PROTOCOL"] = "HTTP/1.1";
 	this->_env["SERVER_SOFTWARE"] = "42webserv/1.0";
 	this->_env["BODY"] = _body;
+	this->_env["UPLOAD_DIR"] = context.location.upload_dir[0];
 }
 
 char	**CgiHandler::getEnv() const

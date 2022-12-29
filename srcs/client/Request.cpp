@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 14:04:34 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/28 18:04:38 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/29 14:56:21 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ void	Request::parse_request_forest(std::string line, std::string name, std::stri
 		host.setValue(value);
 		if (host.values.size() < 2 || host.values[1].empty())
 			host.values.push_back("8000"); // Defaut port if not given in the request
+		if (host[0] == "localhost")
+			host[0] = "127.0.0.1";
 	}
 	else if (name == "User-Agent")
 		user_agent.setValue(value);

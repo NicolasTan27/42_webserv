@@ -6,7 +6,7 @@
 /*   By: ntan <ntan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:49:06 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/27 17:49:01 by ntan             ###   ########.fr       */
+/*   Updated: 2022/12/29 14:52:11 by ntan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ Response::Response(Context cont) : context(cont),
 	content_type("Content_Type", "text/plain", ""),
 	body("body", "Hello world!", "")
 {
+	if (!context.server.server_name[0].empty())
+		this->server.setValue(context.server.server_name[0]);
 	check_response();
 	make_response();
 }

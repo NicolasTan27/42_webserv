@@ -68,7 +68,7 @@ void	Context::find_server()
 
 	if (this->servers.size() == 1)
 		return ;
-	
+
 	// find the server with the same server_name
 	for (size_t i = 0; i < this->servers.size(); i++)
 	{
