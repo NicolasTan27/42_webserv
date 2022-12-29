@@ -154,55 +154,42 @@ int SocketInfo::listen_socket()
 // 	init_master_set();
 // }
 
-int	SocketInfo::listen_socket()
-{
-	int	ret = -1;
 
-	ret = listen(this->server_fd, MAX_BACKLOG);
-	if (ret < 0)
-	{
-		std::cerr << "error: listen() failed" << std::endl;
-		close(this->server_fd);
-		return (1);
-	}
-	return (0);
-}
+// void	SocketInfo::add_socket(int ip, int port)
+// {
+// 	struct sockaddr_in address;
 
-void	SocketInfo::add_socket(int ip, int port)
-{
-	struct sockaddr_in address;
+// 	// set_sockaddr(address, ip, port);
+// 	std::memset((char*) &address, 0, sizeof(address));
+// 	address.sin_family = AF_INET;
+// 	address.sin_addr.s_addr = htonl(ip);
+// 	address.sin_port = htons(port);
 
-	// set_sockaddr(address, ip, port);
-	std::memset((char*) &address, 0, sizeof(address));
-	address.sin_family = AF_INET;
-	address.sin_addr.s_addr = htonl(ip);
-	address.sin_port = htons(port);
+// 	create_socket();
+// 	set_socket_option();
+// 	set_non_blocking();
 
-	create_socket();
-	set_socket_option();
-	set_non_blocking();
+// 	// bind_socket(address);
+// 	int	ret = -1;
 
-	// bind_socket(address);
-	int	ret = -1;
+// 	ret = bind(this->server_fd, (struct sockaddr*)&address, sizeof(address));
+// 	if (ret < 0)
+// 	{
+// 		std::cerr << "error: bind() failed" << std::endl;
+// 		close(this->server_fd);
+// 		return;
+// 	}
 
-	ret = bind(this->server_fd, (struct sockaddr*)&address, sizeof(address));
-	if (ret < 0)
-	{
-		std::cerr << "error: bind() failed" << std::endl;
-		close(this->server_fd);
-		return;
-	}
+// 	listen_socket();
+// 	init_master_set();
+// }
 
-	listen_socket();
-	init_master_set();
-}
-
-void	SocketInfo::init_master_set()
-{
-	// FD_ZERO(&(this->master_set));
-	this->max_fd = this->server_fd;
-	FD_SET(server_fd, &master_set);
-}
+// void	SocketInfo::init_master_set()
+// {
+// 	// FD_ZERO(&(this->master_set));
+// 	this->max_fd = this->server_fd;
+// 	FD_SET(server_fd, &master_set);
+// }
 
 void	SocketInfo::set_timeout()
 {
@@ -290,7 +277,7 @@ void	SocketInfo::server_loop()
 			if (FD_ISSET(i, &working_set))
 			{
 				desc_ready -= 1;
-				if (i <= server_fd)
+				if (std::find(server_fds.begin(), server_fds.end(), i) != server_fds.end())
 				{
 					do
 					{
