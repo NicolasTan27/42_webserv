@@ -6,7 +6,7 @@
 /*   By: sojung <sojung@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 17:18:15 by ntan              #+#    #+#             */
-/*   Updated: 2022/12/29 14:18:40 by sojung           ###   ########.fr       */
+/*   Updated: 2022/12/29 14:51:57 by sojung           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ int Webserver::start()
 		{
 			ports.push_back(port);
 			std::cout << "push backed port : " << port << std::endl;
+		}
+		else
+		{
+			std::cout << "Same ports detected in the configuration file" << std::endl;
+			return (1);
 		}
 	}
 	test.socket_master(ports);

@@ -15,12 +15,6 @@
 
 SocketInfo::SocketInfo(Config conf) : on(1), config(conf), server_fds(std::vector<int>())
 {
-	// ports[0] = 8000;
-	// ports[1] = 8080;
-	// std::memset((char*) &address, 0, sizeof(address));
-	// address.sin_family = AF_INET;
-	// address.sin_addr.s_addr = htonl(INADDR_ANY);
-	// address.sin_port = htons(PORT);
 	end_server = FALSE;
 	FD_ZERO(&master_set);
 }
