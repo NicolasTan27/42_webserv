@@ -107,16 +107,19 @@ struct sockaddr_in SocketInfo::set_sockaddr(struct sockaddr_in &address, int ip,
 // 	return (0);
 // }
 
-int	SocketInfo::listen_socket()
+int SocketInfo::listen_socket()
 {
-	int	ret = -1;
+	int ret = -1;
 
-	ret = listen(this->server_fd, MAX_BACKLOG);
-	if (ret < 0)
+	for (size_t i = 0; i < this->server_fds.size(); i++)
 	{
-		std::cerr << "error: listen() failed" << std::endl;
-		close(this->server_fd);
-		return (1);
+		ret = listen(server_fds[i], MAX_BACKLOG);
+		if (ret < 0)
+		{
+			std::cerr << "error: listen() failed" << std::endl;
+			close(server_fds[i]);
+			return (1);
+		}
 	}
 	return (0);
 }
