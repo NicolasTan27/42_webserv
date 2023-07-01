@@ -179,7 +179,7 @@ std::string	CgiHandler::executeCGI(const std::string  &scriptName)
 		while (ret > 0)
 		{
 			memset(buffer, 0, CGI_SIZE);
-			ret = read(fdOut, buffer, CGI_SIZE + 1);
+			ret = read(fdOut, buffer, CGI_SIZE);
 			newBody += buffer;
 		}
 	}

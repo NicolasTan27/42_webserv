@@ -37,7 +37,7 @@ parse_str($entityBody, $BODY);
 			$dir = scandir($wdir);
 			foreach ($dir as $doc)
 			{
-				if ($doc != '.' && $doc != '..')
+				if ($doc != '.' && $doc != '..' && $doc != '.do_not_delete')
 				{
 					$op = fopen($wdir . $doc, 'r');
 					echo '<option value="' . $doc . '">'. $doc .'</h1>';

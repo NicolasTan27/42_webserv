@@ -218,7 +218,7 @@ void SocketInfo::socket_master(std::vector<int> &ports)
 			break;
 		}
 
-		ret = fcntl(fd, F_SETFL, fcntl(fd, F_GETFL, 0) | O_NONBLOCK);
+		ret = fcntl(fd, F_SETFL, O_NONBLOCK);
 		if (ret < 0)
 		{
 			std::cerr << "error: fcntl() failed" << std::endl;
@@ -231,7 +231,7 @@ void SocketInfo::socket_master(std::vector<int> &ports)
 		address.sin_addr.s_addr = htonl(INADDR_ANY);
 		address.sin_port = htons(ports[i]);
 
-		std::cout << "Actual FD : " << fd << std::endl;
+		// std::cout << "Actual FD : " << fd << std::endl;
 		ret = bind(fd, (struct sockaddr *)&address, sizeof(address));
 		if (ret < 0)
 		{
@@ -243,10 +243,10 @@ void SocketInfo::socket_master(std::vector<int> &ports)
 		this->max_fd = fd;
 		FD_SET(fd, &master_set);
 	}
-	std::cout << "BOUND PORTS : ";
-	for (size_t i = 0; i < server_fds.size(); i++)
-		std::cout << server_fds[i] << " ";
-	std::cout << std::endl;
+	// std::cout << "BOUND PORTS : ";
+	// for (size_t i = 0; i < server_fds.size(); i++)
+	// 	std::cout << server_fds[i] << " ";
+	// std::cout << std::endl;
 }
 
 void	SocketInfo::server_loop()
@@ -322,7 +322,7 @@ void	SocketInfo::server_loop()
 
 						std::string str_buf(buffer, ret);
 
-						std::cout << "test : " << str_buf << std::endl;
+						// std::cout << "test : " << str_buf << std::endl;
 						if (str_buf.find("multipart/form-data") != std::string::npos)
 						{
 							request = Request(str_buf);

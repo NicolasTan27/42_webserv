@@ -39,7 +39,7 @@ parse_str($entityBody, $BODY);
 		$dir = scandir($savedir);
 		foreach ($dir as $doc)
 		{
-			if ($doc != '.' && $doc != '..')
+			if ($doc != '.' && $doc != '..' && $doc != '.do_not_delete')
 			{
 				$op = fopen($savedir . $doc, 'r');
 				echo' <style>
